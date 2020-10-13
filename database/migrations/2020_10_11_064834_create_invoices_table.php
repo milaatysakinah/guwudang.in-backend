@@ -18,6 +18,7 @@ class CreateInvoicesTable extends Migration
   
             $table->foreignId('id_customer')->constrained('customers');
             $table->foreignId('id_user')->constrained('users');
+            $table->string('status');
             $table->timestamps();
         });
     }
