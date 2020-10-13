@@ -12,7 +12,7 @@ services:
         ports: 
             - "8080:80"
         volumes:
-            - ./src/guwudang.in-backend/public:/var/www/html/public
+            - ./src/public:/var/www/html/public
             - ./nginx:/etc/nginx/conf.d
         depends_on: 
             - php
@@ -45,7 +45,7 @@ services:
             dockerfile: Dockerfile
         container_name: php
         volumes: 
-            - ./src/guwudang.in-backend:/var/www/html
+            - ./src:/var/www/html
         ports: 
             - "9000:9000"
         networks: 
