@@ -7,16 +7,18 @@ networks:
 services: 
     nginx:
         image: nginx:stable-alpine
+        command: nginx -g "daemon off;"
         container_name: nginx 
         ports: 
             - "8080:80"
         volumes:
-            - ./src:/var/www/html
+            - ./src/guwudang.in-backend/public:/var/www/html/public
+            - ./nginx:/etc/nginx/conf.d
         depends_on: 
-            -php
-            -mysql
+            - php
+            - mysql
         networks: 
-            -laravel
+            - laravel
 
     mysql:
         image: mysql:5.7.31
@@ -26,12 +28,12 @@ services:
         ports: 
             - "3306:3306"
         volumes: 
-            ./mysql:/var/lib/mysql
+            - mysql-data:/var/lib/mysql
         environment: 
-            MYSQL_DATABASE: homestead
-            MYSQL_USER: homestead
-            MYSQL_PASSWORD: secret
-            MYSQL_ROOT_PASSWORD: secret
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_USER: ${DB_USERNAME}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
             SERVICE_TAGS: dev
             SERVICE_NAME: mysql
         networks: 
@@ -40,5 +42,14 @@ services:
     php:
         build: 
             context: .
+            dockerfile: Dockerfile
+        container_name: php
+        volumes: 
+            - ./src/guwudang.in-backend:/var/www/html
+        ports: 
+            - "9000:9000"
         networks: 
             - laravel
+volumes: 
+    mysql-data:
+        driver: local
