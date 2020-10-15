@@ -18,8 +18,8 @@ class StatusInvoicesSeeder extends Seeder
         //
         //
         //DB::table('status_invoices')->truncate();
-        DB::table('status_invoices')->insert(['name' => 'belum dikirim', 'created_at' => Carbon::now(),]);
-        DB::table('status_invoices')->insert(['name' => 'sedang dikirim', 'created_at' => Carbon::now(),]);
-        DB::table('status_invoices')->insert(['name' => 'sudah dikirim', 'created_at' => Carbon::now(),]);
+        DB::table('status_invoices')->insert(['status' => 'belum dikirim', 'created_at' => Carbon::now(),]);
+        DB::table('status_invoices')->insert(['status' => 'sedang dikirim', 'created_at' => Carbon::now(),]);
+        DB::table('status_invoices')->insert(['status' => 'sudah dikirim', 'created_at' => Carbon::now(),]);
     }
 }

@@ -18,11 +18,11 @@ class CreateProductsTable extends Migration
             $table->foreignId('id_product_type')->constrained('product_types');
             $table->foreignId('id_user')->constrained('users');
             $table->string("product_name");
-            $table->string("product_quantity");
+            //$table->string("product_quantity");
             $table->double("price",8,2);
             $table->string("units");
             // $table->string("description");
-            $table->string("product_picture");
+            //$table->string("product_picture");
             $table->timestamps();
         });
     }

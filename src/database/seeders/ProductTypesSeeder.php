@@ -17,7 +17,7 @@ class ProductTypesSeeder extends Seeder
     {
         //
         //DB::table('product_types')->truncate();
-        DB::table('product_types')->insert(['name' => 'fashion', 'created_at' => Carbon::now(),]);
-        DB::table('product_types')->insert(['name' => 'electronic', 'created_at' => Carbon::now(),]);
+        DB::table('product_types')->insert(['product_type_name' => 'fashion', 'created_at' => Carbon::now(),]);
+        DB::table('product_types')->insert(['product_type_name' => 'electronic', 'created_at' => Carbon::now(),]);
     }
 }

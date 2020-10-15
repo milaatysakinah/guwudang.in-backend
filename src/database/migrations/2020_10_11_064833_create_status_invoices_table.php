@@ -15,7 +15,7 @@ class CreateStatusInvoicesTable extends Migration
     {
         Schema::create('status_invoices', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('status');
             $table->timestamps();
         });
     }
