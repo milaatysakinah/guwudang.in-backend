@@ -16,3 +16,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/listCustomers', 'CustomersController@index');
+
+Route::get('/listCustomers/search','CustomersController@search');
+
+Route::get('/listCustomers/proses','CustomersController@proses');
+
+Route::get('/listCustomers/create','CustomersController@create');
