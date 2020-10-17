@@ -17,3 +17,13 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::resource('product', 'App\Http\Controllers\ProductController');
+/*
+Route::get('product','App\Http\Controllers\ProductController@index');
+Route::post('product','App\Http\Controllers\ProductController@create');
+Route::put('product','App\Http\Controllers\ProductController@update');
+Route::delete('product','App\Http\Controllers\ProductController@destroy');
+*/
+
+
