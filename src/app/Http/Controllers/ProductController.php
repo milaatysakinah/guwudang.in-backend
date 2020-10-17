@@ -60,8 +60,8 @@ class ProductController extends Controller
         $product ->id_user = $request->id_user;
         $product ->product_name = $request->product_name;
         $product ->price = $request->price;
-            $product ->units = $request->units;
-            $product ->updated_at = date('Y-m-d H:i:s');
+        $product ->units = $request->units;
+        $product ->updated_at = date('Y-m-d H:i:s');
         $product->save();
 
         return "Product Updated";

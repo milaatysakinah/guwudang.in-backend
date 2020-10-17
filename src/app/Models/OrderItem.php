@@ -13,7 +13,6 @@ class OrderItem extends Model
         'id_invoice',
         'id_product',
         'transaction_id',
-        'transaction_date',
         'order_quantity',
     ];
 
