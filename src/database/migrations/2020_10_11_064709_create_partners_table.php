@@ -13,9 +13,9 @@ class CreateCustomersTable extends Migration
      */
     public function up()
     {
-        Schema::create('customers', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('id_user')->constrained('users');
+        Schema::create('partners', function (Blueprint $table) {
+            $table->id('partner_id');
+            $table->foreignId('user_id')->constrained('users');
             $table->string('name');
             $table->string('email');
             $table->string('address');
