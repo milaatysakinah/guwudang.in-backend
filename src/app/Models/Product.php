@@ -18,10 +18,10 @@ class Product extends Model
     ];
 
     public function productType(){
-        return $this->belongsTo(ProductType::class, 'product_type_id'. 'id');
+        return $this->belongsTo(ProductType::class, 'id_product_type'. 'id');
     }
 
     public function user(){
-        return $this->belongsTo(User::class, 'user_id'. 'id');
+        return $this->belongsTo(User::class, 'id_user'. 'id');
     }
 }
