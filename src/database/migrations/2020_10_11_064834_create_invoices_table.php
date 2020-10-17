@@ -14,8 +14,8 @@ class CreateInvoicesTable extends Migration
     public function up()
     {
         Schema::create('invoices', function (Blueprint $table) {
-            $table->id('invoices_id');
-            $table->foreignId('partner_id')->constrained('customers');
+            $table->id();
+            $table->foreignId('partner_id')->constrained('partners');
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('status_invoice_id')->constrained('status_invoices');
             //$table->string('status');

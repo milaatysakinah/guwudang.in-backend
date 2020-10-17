@@ -14,7 +14,7 @@ class CreateProductDetailTable extends Migration
     public function up()
     {
         Schema::create('product_detail', function (Blueprint $table) {
-            $table->id('product_detail_id');
+            $table->id();
             $table->foreignId('product_id')->constrained('products');
             $table->integer('product_quantity');
             $table->string('description');

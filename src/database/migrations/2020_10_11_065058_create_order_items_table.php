@@ -14,7 +14,7 @@ class CreateOrderItemsTable extends Migration
     public function up()
     {
         Schema::create('order_items', function (Blueprint $table) {
-            $table->id('order_item_id');
+            $table->id();
             $table->foreignId('invoice_id')->constrained('invoices');
             $table->foreignId('product_id')->constrained('products');
             $table->foreignId('transaction_type_id')->constrained('transaction_types');
