@@ -31,5 +31,7 @@ Route::get('/partner/search','PartnerController@search');
 Route::get('/partner/proses','PartnerController@proses');
 Route::get('/partner/create','PartnerController@create');
 
-
-
+// Route::get('invoice', 'App\Http\Controllers\InvoicesController@invoices');
+// Route::post('invoice', 'App\Http\Controllers\InvoicesController@create');
+// Route::put('invoice/{id}', 'App\Http\Controllers\InvoicesController@update');
+// Route::delete('invoice/{id}', 'App\Http\Controllers\InvoicesController@destroy');
