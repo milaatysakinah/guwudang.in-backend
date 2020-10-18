@@ -26,7 +26,10 @@ Route::put('product','App\Http\Controllers\ProductController@update');
 Route::delete('product','App\Http\Controllers\ProductController@destroy');
 */
 
-
+Route::get('/partner', 'PartnerController@index');
+Route::get('/partner/search','PartnerController@search');
+Route::get('/partner/proses','PartnerController@proses');
+Route::get('/partner/create','PartnerController@create');
 
 
 
