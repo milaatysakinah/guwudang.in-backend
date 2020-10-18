@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Partner;
+use Illuminate\Support\Facades\DB;
 
 class PartnerController extends Controller
 {
@@ -23,12 +25,8 @@ class PartnerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        return view('create');
-    }
 
-    public function proses(Request $request)
+    public function create(Request $request)
     {
         $messages = [
             'required' => 'Harap isi :attribute ini',
