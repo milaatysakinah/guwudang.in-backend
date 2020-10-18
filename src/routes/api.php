@@ -31,6 +31,3 @@ Route::get('/partner', 'App\Http\Controllers\PartnerController@index');
 Route::get('/partner/search','App\Http\Controllers\PartnerController@search');
 Route::get('/partner/proses','App\Http\Controllers\PartnerController@proses');
 Route::get('/partner/create','App\Http\Controllers\PartnerController@create');
-
-
-
