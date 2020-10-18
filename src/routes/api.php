@@ -36,5 +36,3 @@ Route::get('/orderItems/delete','OrderItemsController@delete');
 Route::get('/orderItems/update','OrderItemsController@update');
 Route::get('/partner/create','OrderItemsController@create');
 
-
-
