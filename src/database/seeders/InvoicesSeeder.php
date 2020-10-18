@@ -22,5 +22,12 @@ class InvoicesSeeder extends Seeder
             'status_invoice_id' => 1,
             'created_at' => Carbon::now(),
         ]);
+
+        DB::table('invoices')->insert([
+            'partner_id' => 2,
+            'user_id' => 1,
+            'status_invoice_id' => 1,
+            'created_at' => Carbon::now(),
+        ]);
     }
 }
