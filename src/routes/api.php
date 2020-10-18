@@ -28,10 +28,16 @@ Route::delete('product','App\Http\Controllers\ProductController@destroy');
 
 Route::get('/partner', 'PartnerController@index');
 Route::get('/partner/search','PartnerController@search');
-Route::get('/partner/proses','PartnerController@proses');
-Route::get('/partner/create','PartnerController@create');
+Route::put('/partner/create','PartnerController@create');
 
 Route::get('/orderItems', 'OrderItemsController@index');
+<<<<<<< HEAD
 Route::get('/orderItems/delete','OrderItemsController@delete');
 Route::get('/orderItems/update','OrderItemsController@update');
 Route::get('/partner/create','OrderItemsController@create');
+=======
+Route::delete('/orderItems/delete','OrderItemsController@delete');
+Route::put('/orderItems/update','OrderItemsController@update');
+Route::get('/partner/create','OrderItemsController@create');
+
+>>>>>>> f4c7738eb0c3eac0a742e7f9f99497dc4f7bb6b7
