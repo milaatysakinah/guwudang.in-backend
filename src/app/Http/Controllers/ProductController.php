@@ -25,7 +25,7 @@ class ProductController extends Controller
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
 
-        return "New Product Created";    
+        return "New Product Created";
     }
 
     public function index(){
@@ -42,7 +42,7 @@ class ProductController extends Controller
         $product ->units = $request->units;
         $product->save();
 
-        
+
         return "New Product Created";
     }
 
@@ -55,8 +55,8 @@ class ProductController extends Controller
 
     public function update(Request $request, $id){
         $product = Product::find($id);
-        
-        $product ->id_product_type = $request->id_product_type; 
+
+        $product ->id_product_type = $request->id_product_type;
         $product ->id_user = $request->id_user;
         $product ->product_name = $request->product_name;
         $product ->price = $request->price;
@@ -74,6 +74,17 @@ class ProductController extends Controller
     public function edit($id){
         echo 'edit_product';
     }
+
+    public function search(Request $request)
+	{
+		$search = $request->search;
+
+		$product = DB::table('product')
+		->where('name','like',"%".$search."%")
+		->paginate();
+
+		return view('index',['name' => $product]);
+	}
 
 
     //public function __invoke(Request $request)
