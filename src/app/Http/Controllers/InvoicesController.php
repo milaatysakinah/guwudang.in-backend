@@ -124,4 +124,9 @@ class InvoicesController extends Controller
 
         return "Invoice Deleted";
     }
+
+    public function search(Request $request)
+	{
+		
+	}
 }
