@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class ListCustomersController extends Controller
+class PartnerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,9 +13,9 @@ class ListCustomersController extends Controller
      */
     public function index()
     {
-        $listCustomers = DB::table('customer') -> get();
+        $partner = DB::table('partner') -> get();
 
-        return view('customer', ['customer' => $listCustomers]);
+        return view('partner', ['partner' => $partner]);
     }
 
     /**
@@ -36,7 +36,7 @@ class ListCustomersController extends Controller
         ];
 
         $this->validate($request, [
-            'nama' => 'required|min:5|max:20',
+            'name' => 'required|min:5|max:20',
             'address' => 'required|max 50',
             'email' => 'required|email',
             'phone_number' => 'required|numeric'
@@ -56,11 +56,11 @@ class ListCustomersController extends Controller
 	{
 		$search = $request->search;
 
-		$customer = DB::table('customer')
+		$partner = DB::table('partner')
 		->where('name','like',"%".$search."%")
 		->paginate();
 
-		return view('index',['name' => $customer]);
+		return view('index',['name' => $partner]);
 	}
 
     /**
