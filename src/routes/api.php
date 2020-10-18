@@ -14,11 +14,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+/*Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
-});
+});*/
 
 Route::resource('product', 'App\Http\Controllers\ProductController');
+Route::resource('user', 'App\Http\Controllers\UserController');
 /*
 Route::get('product','App\Http\Controllers\ProductController@index');
 Route::post('product','App\Http\Controllers\ProductController@create');
@@ -26,10 +27,10 @@ Route::put('product','App\Http\Controllers\ProductController@update');
 Route::delete('product','App\Http\Controllers\ProductController@destroy');
 */
 
-Route::get('/partner', 'PartnerController@index');
-Route::get('/partner/search','PartnerController@search');
-Route::get('/partner/proses','PartnerController@proses');
-Route::get('/partner/create','PartnerController@create');
+Route::get('/partner', 'App\Http\Controllers\PartnerController@index');
+Route::get('/partner/search','App\Http\Controllers\PartnerController@search');
+Route::get('/partner/proses','App\Http\Controllers\PartnerController@proses');
+Route::get('/partner/create','App\Http\Controllers\PartnerController@create');
 
 
 
