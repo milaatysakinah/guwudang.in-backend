@@ -10,16 +10,20 @@ class Invoice extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id_customer',
-        'id_user',
-        'transaction_date',
+        'partner_id',
+        'user_id',
+        'status_invoice_id',
     ];
 
-    public function customer(){
-        return $this->belongsTo(Customer::class, 'id_customer'. 'id');
+    public function partner(){
+        return $this->belongsTo(Customer::class, 'partner_id'. 'id');
     }
 
     public function user(){
-        return $this->belongsTo(User::class, 'id_user'. 'id');
+        return $this->belongsTo(User::class, 'user_id'. 'id');
+    }
+
+    public function status(){
+        return $this->belongsTo(Status::class, 'status_invoices_id'. 'id');
     }
 }

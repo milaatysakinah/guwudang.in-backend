@@ -26,4 +26,8 @@ Route::put('product','App\Http\Controllers\ProductController@update');
 Route::delete('product','App\Http\Controllers\ProductController@destroy');
 */
 
+// Route::get('invoice', 'App\Http\Controllers\InvoicesController@invoices');
+// Route::post('invoice', 'App\Http\Controllers\InvoicesController@create');
+// Route::put('invoice/{id}', 'App\Http\Controllers\InvoicesController@update');
+// Route::delete('invoice/{id}', 'App\Http\Controllers\InvoicesController@destroy');
 
