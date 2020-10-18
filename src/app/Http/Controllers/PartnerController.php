@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Partner;
+use Illuminate\Support\Facades\DB;
 
 class PartnerController extends Controller
 {
