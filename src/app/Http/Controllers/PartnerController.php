@@ -39,7 +39,7 @@ class PartnerController extends Controller
             'name' => 'required|min:5|max:20',
             'address' => 'required|max 50',
             'email' => 'required|email',
-            'phone_number' => 'required|numeric'
+            'phone_number' => 'required|numeric|max 12'
         ], $messages);
 
         DB::table('create')->insert([
