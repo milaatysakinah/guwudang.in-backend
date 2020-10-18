@@ -15,9 +15,9 @@ class CreateInvoicesTable extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_customer')->constrained('customers');
-            $table->foreignId('id_user')->constrained('users');
-            $table->foreignId('id_status_invoice')->constrained('status_invoices');
+            $table->foreignId('partner_id')->constrained('partners');
+            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('status_invoice_id')->constrained('status_invoices');
             //$table->string('status');
 
             $table->timestamps();

@@ -15,11 +15,11 @@ class CreateOrderItemsTable extends Migration
     {
         Schema::create('order_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_invoice')->constrained('invoices');
-            $table->foreignId('id_product')->constrained('products');
-            $table->foreignId('id_transaction_type')->constrained('transaction_types');
+            $table->foreignId('invoice_id')->constrained('invoices');
+            $table->foreignId('product_id')->constrained('products');
+            $table->foreignId('transaction_type_id')->constrained('transaction_types');
             $table->date('transaction_date');
-            $table->integer('quantity');
+            $table->integer('order_quantity');
             $table->timestamps();
         });
     }

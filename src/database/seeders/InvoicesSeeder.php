@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
-class ProductSeeder extends Seeder
+class InvoicesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,12 +15,12 @@ class ProductSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('products')->insert([
-            'product_type_id' => 1,
+        //
+        DB::table('invoices')->insert([
+            'partner_id' => 1,
             'user_id' => 1,
-            'product_name' => 'Baju Badut',
-            'price' => 200000,
-            'units' => "Kg",
+            'status_invoice_id' => 1,
+            'created_at' => Carbon::now(),
         ]);
     }
 }
