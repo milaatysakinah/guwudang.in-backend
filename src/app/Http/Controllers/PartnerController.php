@@ -25,12 +25,8 @@ class PartnerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        return view('create');
-    }
 
-    public function proses(Request $request)
+    public function create(Request $request)
     {
         $messages = [
             'required' => 'Harap isi :attribute ini',
