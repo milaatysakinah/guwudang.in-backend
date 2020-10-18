@@ -45,7 +45,7 @@ class PartnerController extends Controller
         DB::table('create')->insert([
             'name' => $request->name,
             'address' => $request->address,
-            'email' => $request->emal,
+            'email' => $request->email,
             'phone_number' => $request->phone_number
         ]);
 
