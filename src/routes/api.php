@@ -31,5 +31,10 @@ Route::get('/partner/search','PartnerController@search');
 Route::get('/partner/proses','PartnerController@proses');
 Route::get('/partner/create','PartnerController@create');
 
+Route::get('/orderItems', 'OrderItemsController@index');
+Route::get('/orderItems/delete','OrderItemsController@delete');
+Route::get('/orderItems/update','OrderItemsController@update');
+Route::get('/partner/create','OrderItemsController@create');
+
 
 
