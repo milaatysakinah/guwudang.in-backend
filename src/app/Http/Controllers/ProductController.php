@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Auth;
 use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
@@ -86,6 +87,15 @@ class ProductController extends Controller
 		return view('index',['name' => $product]);
 	}
 
+    public function product(){
+        $data = "Data All Product";
+        return response()->json($data, 200);
+    }
+
+    public function productAuth(){
+        $data = "Welcome " . Auth::User()->username;
+        return response()->json($data, 200);
+    }
 
     //public function __invoke(Request $request)
     //{
