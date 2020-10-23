@@ -35,12 +35,11 @@ class InvoicesController extends Controller
     {
         $this->validate($request, [
             'partner_id' => 'required',
-            'partner_id' => 'required',
             'user_id' => 'required',
+            'status_invoice_id' => 'required',
         ]);
 
         $invoice->create([
-            'partner_id' => $request->partner_id,
             'partner_id' => $request->partner_id,
             'user_id' => $request->user_id,
             'status_invoice_id' => $request->status_invoice_id,
@@ -62,12 +61,11 @@ class InvoicesController extends Controller
         //this->validate($request, []);
         $this->validate($request, [
             'partner_id' => 'required',
-            'partner_id' => 'required',
             'user_id' => 'required',
+            'status_invoice_id' => 'required',
         ]);
 
         $invoice->create([
-            'partner_id' => $request->partner_id,
             'partner_id' => $request->partner_id,
             'user_id' => $request->user_id,
             'status_invoice_id' => $request->status_invoice_id,
