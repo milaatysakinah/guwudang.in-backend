@@ -82,10 +82,10 @@ class InvoicesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Invoice $invoice)
     {
         //
-
+        return response()->json($invoice);
     }
 
     /**
@@ -97,6 +97,7 @@ class InvoicesController extends Controller
     public function edit($id)
     {
         //
+        echo 'edit_invoice';
     }
 
     /**
@@ -136,6 +137,12 @@ class InvoicesController extends Controller
 
     public function search(Request $request)
 	{
-		
+		$search = $request->search;
+
+		$invoice = DB::table('invoices')
+		->where('user_id','like',"%".$search."%")
+		->paginate();
+
+		return view('index',['name' => $invoice]);
 	}
 }
