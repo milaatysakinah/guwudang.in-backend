@@ -34,7 +34,6 @@ Route::put('product','App\Http\Controllers\ProductController@update');
 Route::delete('product','App\Http\Controllers\ProductController@destroy');
 */
 
-<<<<<<< HEAD
 Route::get('/partner', 'PartnerController@index');
 Route::get('/partner/search','PartnerController@search');
 Route::put('/partner/create','PartnerController@create');
@@ -43,14 +42,3 @@ Route::get('/orderItems', 'OrderItemsController@index');
 Route::get('/orderItems/delete','OrderItemsController@delete');
 Route::get('/orderItems/update','OrderItemsController@update');
 Route::get('/partner/create','OrderItemsController@create');
-=======
-Route::get('/partner', 'App\Http\Controllers\PartnerController@index');
-Route::get('/partner/search','App\Http\Controllers\PartnerController@search');
-Route::put('/partner/create','App\Http\Controllers\PartnerController@create');
-
-Route::get('/orderItems', 'App\Http\Controllers\OrderItemController@index');
-Route::delete('/orderItems/delete','App\Http\Controllers\OrderItemController@delete');
-Route::put('/orderItems/update','App\Http\Controllers\OrderItemController@update');
-Route::get('/partner/create','App\Http\Controllers\OrderItemController@create');
-
->>>>>>> df7b0d4083436c40cfa636ccaae07da1e8e64498
