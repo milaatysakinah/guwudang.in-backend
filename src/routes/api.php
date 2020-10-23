@@ -43,3 +43,8 @@ Route::delete('/orderItems/delete','App\Http\Controllers\OrderItemController@del
 Route::put('/orderItems/update','App\Http\Controllers\OrderItemController@update');
 Route::get('/partner/create','App\Http\Controllers\OrderItemController@create');
 
+Route::get('/invoice', 'App\Http\Controllers\InvoicesController@index');
+Route::delete('/invoice/delete','App\Http\Controllers\InvoicesController@delete');
+Route::put('/invoice/update','App\Http\Controllers\InvoicesController@update');
+Route::get('/invoice/create','App\Http\Controllers\InvoicesController@create');
+
