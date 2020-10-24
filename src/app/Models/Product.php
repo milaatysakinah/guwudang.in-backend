@@ -10,18 +10,18 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id_product_type',
-        'id_user',
+        'product_type_id',
+        'user_id',
         'product_name',
         'price',
         'units',
     ];
 
     public function productType(){
-        return $this->belongsTo(ProductType::class, 'id_product_type'. 'id');
+        return $this->belongsTo(ProductType::class, 'product_type_id'. 'id');
     }
 
     public function user(){
-        return $this->belongsTo(User::class, 'id_user'. 'id');
+        return $this->belongsTo(User::class, 'user_id'. 'id');
     }
 }

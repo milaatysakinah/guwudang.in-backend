@@ -144,5 +144,10 @@ class InvoicesController extends Controller
 		->paginate();
 
 		return view('index',['name' => $invoice]);
-	}
+    }
+    
+    public function __invoke(Request $request)
+    {
+        //
+    }
 }

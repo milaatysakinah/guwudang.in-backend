@@ -28,7 +28,7 @@ class PartnerController extends Controller
 
     public function create(Request $request)
     {
-        $messages = [
+       /* $messages = [
             'required' => 'Harap isi :attribute ini',
             'max' => ':attribute harus diisi maksimal :max karakter',
         ];
@@ -48,6 +48,7 @@ class PartnerController extends Controller
         ]);
 
         return view('proses',['data' => $request]);
+            */
     }
 
     public function search(Request $request)
@@ -69,7 +70,17 @@ class PartnerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        DB::table('partners')->insert([
+            'user_id' => $request->user_id,
+            'name' => $request->name,
+            'email' => $request->email,
+            'address' => $request->address,
+            'phone_number' => $request->phone_number,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
+        ]);
+
+        return "New Partner Created";
     }
 
     /**
@@ -78,9 +89,9 @@ class PartnerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Partner $partner)
     {
-        //
+        return response()->json($partner);
     }
 
     /**
@@ -91,7 +102,7 @@ class PartnerController extends Controller
      */
     public function edit($id)
     {
-        //
+        echo 'edit_product';
     }
 
     /**
@@ -103,7 +114,18 @@ class PartnerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $partner = Partner::find($id);
+
+        $partner->user_id = $request->user_id;
+        $partner->name = $request->name;
+        $partner->email = $request->email;
+        $partner->address = $request->address;
+        $partner->phone_number = $request->phone_number;
+        $partner->updated_at = date('Y-m-d H:i:s');
+        
+        $partner->save();
+
+        return "Partner Updated";
     }
 
     /**
@@ -114,6 +136,9 @@ class PartnerController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $partner = Partner::find($id);
+        $partner ->delete();
+
+        return "Partner Deleted";
     }
 }

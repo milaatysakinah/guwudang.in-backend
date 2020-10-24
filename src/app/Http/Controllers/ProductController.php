@@ -17,8 +17,8 @@ class ProductController extends Controller
      */
     public function store(Request $request){
         DB::table('products')->insert([
-            'id_product_type' => $request->id_product_type,
-            'id_user' => $request->id_user,
+            'product_type_id' => $request->product_type_id,
+            'user_id' => $request->user_id,
             'product_name' => $request->product_name,
             'price' => $request->price,
             'units' => $request->units,
@@ -34,7 +34,7 @@ class ProductController extends Controller
     }
 
     public function create(Request $request){
-        $product = new Product;
+        /*$product = new Product;
 
         $product ->id_product_type = $request->id_product_type;
         $product ->id_user = $request->id_user;
@@ -44,7 +44,8 @@ class ProductController extends Controller
         $product->save();
 
 
-        return "New Product Created";
+        return "New Product Created";*/
+        echo "View Create";
     }
 
     public function destroy($id){
@@ -57,12 +58,12 @@ class ProductController extends Controller
     public function update(Request $request, $id){
         $product = Product::find($id);
 
-        $product ->id_product_type = $request->id_product_type;
-        $product ->id_user = $request->id_user;
-        $product ->product_name = $request->product_name;
-        $product ->price = $request->price;
-        $product ->units = $request->units;
-        $product ->updated_at = date('Y-m-d H:i:s');
+        $product->product_type_id = $request->product_type_id;
+        $product->user_id = $request->user_id;
+        $product->product_name = $request->product_name;
+        $product->price = $request->price;
+        $product->units = $request->units;
+        $product->updated_at = date('Y-m-d H:i:s');
         $product->save();
 
         return "Product Updated";

@@ -74,4 +74,9 @@ class LoginController extends Controller
 
         return response()->json(compact('user'));
     }
+
+    public function __invoke(Request $request)
+    {
+        //
+    }
 }

@@ -2,6 +2,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\OrderItem;
+use Illuminate\Support\Facades\DB;
 
 class OrderItemController extends Controller
 {
@@ -59,6 +61,17 @@ class OrderItemController extends Controller
     public function store(Request $request)
     {
         //
+        DB::table('order_items')->insert([
+            'invoice_id' => $request->invoice_id,
+            'product_id' => $request->product_id,
+            'transaction_type_id' => $request->transaction_type_id,
+            'transaction_date' => date('Y-m-d H:i:s'),
+            'order_quantity' => $request->order_quantity,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
+        ]);
+
+        return "New OrderItem Created";
     }
 
     /**
@@ -67,10 +80,9 @@ class OrderItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(OrderItem $order_item)
     {
-        $order_items = Post::find($id);
-		return view('OrderItems',compact('order_items'));
+        return response()->json($order_item);
     }
 
     /**
@@ -93,14 +105,14 @@ class OrderItemController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $order_items = order_items::find($id);
+        $order_items = OrderItem::find($id);
 
-        $order_items ->id_order_items_type = $request->id_order_items_type;
-        $order_items ->invoice_id = $request->invoice_id;
-        $order_items ->product_id = $request->prouct_id;
-        $order_items ->transaction_type = $request->transaction_type;
-        $order_items ->transaction_date = date('Y-m-d H:i:s');
-        $order_items ->order_quantity = $request->order_quantity;
+        $order_items->invoice_id = $request->invoice_id;
+        $order_items->product_id = $request->product_id;
+        $order_items->transaction_type_id = $request->transaction_type_id;
+        $order_items->order_quantity = $request->order_quantity;
+        $order_items->updated_at = date('Y-m-d H:i:s');
+
         $order_items->save();
 
         return "Order Items Updated";
@@ -114,7 +126,7 @@ class OrderItemController extends Controller
      */
     public function destroy($id)
     {
-        $order_items = OrderItems::find($id);
+        $order_items = OrderItem::find($id);
         $order_items ->delete();
 
         return "This Order Item has been Deleted";

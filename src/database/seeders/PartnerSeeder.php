@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
-class PartnersSeeder extends Seeder
+class PartnerSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,7 +16,7 @@ class PartnersSeeder extends Seeder
     public function run()
     {
         //
-        DB::table('partner')->insert([
+        DB::table('partners')->insert([
             'user_id' => 1,
             'name' => 'Kambing',
             'email' => 'kambing@gmail.com',
@@ -25,8 +25,8 @@ class PartnersSeeder extends Seeder
             'created_at' => Carbon::now(),
         ]);
 
-        DB::table('partner')->insert([
-            'user_id' => 2,
+        DB::table('partners')->insert([
+            'user_id' => 1,
             'name' => 'Sakinah',
             'email' => 'sakinah@gmail.com',
             'address' => 'Jl. ITS 14',

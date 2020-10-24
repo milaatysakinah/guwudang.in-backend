@@ -12,7 +12,7 @@ class Invoice extends Model
     protected $fillable = [
         'partner_id',
         'user_id',
-        'status_invoid_id'
+        'status_invoice_id'
     ];
 
     public function partner(){
