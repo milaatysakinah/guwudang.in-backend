@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\TransactionType;
 use Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
-class UserController extends Controller
+
+class TransactionTypeController extends Controller
 {
-       /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -18,7 +18,7 @@ class UserController extends Controller
     public function index()
     {
         //
-        return User::all();
+        return TransactionType::all();
     }
 
     /**
@@ -41,16 +41,13 @@ class UserController extends Controller
     public function store(Request $request)
     {
         //
-        DB::table('users')->insert([
-            'email' => $request->email,
-            'username' => $request->username,
-            'profile_picture' => $request->profile_picture,
-            'password' => Hash::make($request->get('password')),
+        DB::table('transaction_types')->insert([
+            'transaction_name' => $request->transaction_name,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
 
-        return "New User Created";
+        return "New Transaction Type Created";
     }
 
     /**
@@ -59,10 +56,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(Status $status)
     {
         //
-        return response()->json($user);
+        return response()->json($status);
     }
 
     /**
@@ -74,7 +71,7 @@ class UserController extends Controller
     public function edit($id)
     {
         //
-        echo 'edit User';
+        echo 'edit Status';
     }
 
     /**
@@ -87,16 +84,13 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $user = User::find($id);
+        $transactionType = TransactionType::find($id);
 
-        $user->email = $request->email;
-        $user->username = $request->username;
-        $user->profile_picture = $request->profile_picture;
-        $user->password = Hash::make($request->get('password'));
-        $user->updated_at = date('Y-m-d H:i:s');
-        $user->save();
+        $transactionType->transaction_name = $request->transaction_name;
+        $transactionType->updated_at = date('Y-m-d H:i:s');
+        $transactionType->save();
 
-        return "User Updated";
+        return "Transaction Type Updated";
     }
 
     /**
@@ -108,10 +102,9 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
-        $user = User::find($id);
-        $user ->delete();
+        $transactionType = TransactionType::find($id);
+        $transactionType ->delete();
 
-        return "User Deleted";
+        return "Transaction Type Deleted";
     }
-
 }
