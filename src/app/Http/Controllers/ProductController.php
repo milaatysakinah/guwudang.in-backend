@@ -81,11 +81,12 @@ class ProductController extends Controller
 	{
 		$search = $request->search;
 
-		$product = DB::table('product')
-		->where('name','like',"%".$search."%")
+		$product = DB::table('products')
+		->where('product_name','like',"%".$search."%")
 		->paginate();
 
-		return view('index',['name' => $product]);
+        //return view('index',['name' => $product]);
+        return response()->json($product, 200);
 	}
 
     public function product(){

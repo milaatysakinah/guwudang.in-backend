@@ -19,7 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::resource('product', 'App\Http\Controllers\ProductController');
-Route::get('product','App\Http\Controllers\ProductController@search');
+Route::get('searchProduct','App\Http\Controllers\ProductController@search');
 Route::get('product','App\Http\Controllers\ProductController@product');
 Route::get('productall', 'App\Http\Controllers\ProductController@productAuth')->middleware('jwt.verify');
 
@@ -40,3 +40,8 @@ Route::resource('invoice', 'App\Http\Controllers\InvoicesController');
 Route::post('login', 'App\Http\Controllers\LoginController@login');
 Route::post('register', 'App\Http\Controllers\LoginController@register');
 Route::get('authUser', 'App\Http\Controllers\LoginController@getAuthenticatedUser')->middleware('jwt.verify');
+
+Route::resource('productDetail', 'App\Http\Controllers\ProductDetailController');
+Route::resource('productType', 'App\Http\Controllers\ProductTypeController');
+Route::resource('status', 'App\Http\Controllers\StatusController');
+Route::resource('transactionType', 'App\Http\Controllers\TransactionTypeController');

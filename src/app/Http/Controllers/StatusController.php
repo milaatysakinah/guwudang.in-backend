@@ -3,14 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\Status;
 use Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
-class UserController extends Controller
+class StatusController extends Controller
 {
-       /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -18,7 +17,7 @@ class UserController extends Controller
     public function index()
     {
         //
-        return User::all();
+        return Status::all();
     }
 
     /**
@@ -29,7 +28,7 @@ class UserController extends Controller
     public function create()
     {
         //
-        echo "View Create TransactionType";
+        echo "View Create Status";
     }
 
     /**
@@ -41,16 +40,13 @@ class UserController extends Controller
     public function store(Request $request)
     {
         //
-        DB::table('users')->insert([
-            'email' => $request->email,
-            'username' => $request->username,
-            'profile_picture' => $request->profile_picture,
-            'password' => Hash::make($request->get('password')),
+        DB::table('status_invoices')->insert([
+            'status' => $request->status,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
 
-        return "New User Created";
+        return "New Product Detail Created";
     }
 
     /**
@@ -59,10 +55,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(Status $status)
     {
         //
-        return response()->json($user);
+        return response()->json($status);
     }
 
     /**
@@ -74,7 +70,7 @@ class UserController extends Controller
     public function edit($id)
     {
         //
-        echo 'edit User';
+        echo 'edit Status';
     }
 
     /**
@@ -87,16 +83,13 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $user = User::find($id);
+        $status = Status::find($id);
 
-        $user->email = $request->email;
-        $user->username = $request->username;
-        $user->profile_picture = $request->profile_picture;
-        $user->password = Hash::make($request->get('password'));
-        $user->updated_at = date('Y-m-d H:i:s');
-        $user->save();
+        $status->status = $request->status;
+        $status->updated_at = date('Y-m-d H:i:s');
+        $status->save();
 
-        return "User Updated";
+        return "Status Updated";
     }
 
     /**
@@ -108,10 +101,9 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
-        $user = User::find($id);
-        $user ->delete();
+        $status = Status::find($id);
+        $status ->delete();
 
-        return "User Deleted";
+        return "Status Deleted";
     }
-
 }

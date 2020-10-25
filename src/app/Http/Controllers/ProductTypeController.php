@@ -3,14 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\ProductType;
 use Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
-class UserController extends Controller
+class ProductTypeController extends Controller
 {
-       /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -18,7 +17,7 @@ class UserController extends Controller
     public function index()
     {
         //
-        return User::all();
+        return ProductType::all();
     }
 
     /**
@@ -29,7 +28,7 @@ class UserController extends Controller
     public function create()
     {
         //
-        echo "View Create TransactionType";
+        echo "View Create Product Type";
     }
 
     /**
@@ -41,16 +40,13 @@ class UserController extends Controller
     public function store(Request $request)
     {
         //
-        DB::table('users')->insert([
-            'email' => $request->email,
-            'username' => $request->username,
-            'profile_picture' => $request->profile_picture,
-            'password' => Hash::make($request->get('password')),
+        DB::table('product_types')->insert([
+            'product_type_name' => $request->product_type_name,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
 
-        return "New User Created";
+        return "New Product Type Created";
     }
 
     /**
@@ -59,10 +55,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(ProductType $productType)
     {
         //
-        return response()->json($user);
+        return response()->json($productType);
     }
 
     /**
@@ -74,7 +70,7 @@ class UserController extends Controller
     public function edit($id)
     {
         //
-        echo 'edit User';
+        echo 'edit Product Type';
     }
 
     /**
@@ -87,16 +83,13 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $user = User::find($id);
+        $productType = ProductType::find($id);
 
-        $user->email = $request->email;
-        $user->username = $request->username;
-        $user->profile_picture = $request->profile_picture;
-        $user->password = Hash::make($request->get('password'));
-        $user->updated_at = date('Y-m-d H:i:s');
-        $user->save();
+        $productType->product_type_name = $request->product_type_name;
+        $productType->updated_at = date('Y-m-d H:i:s');
+        $productType->save();
 
-        return "User Updated";
+        return "Product Type Updated";
     }
 
     /**
@@ -108,10 +101,9 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
-        $user = User::find($id);
-        $user ->delete();
+        $productType = ProductType::find($id);
+        $productType ->delete();
 
-        return "User Deleted";
+        return "Product Type Deleted";
     }
-
 }
