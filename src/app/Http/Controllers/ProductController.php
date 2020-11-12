@@ -90,7 +90,7 @@ class ProductController extends Controller
 	}
 
     public function product(){
-        $data = "Data All Product";
+        $data = Product::all();
         return response()->json($data, 200);
     }
 

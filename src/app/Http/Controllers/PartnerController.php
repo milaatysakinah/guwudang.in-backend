@@ -15,9 +15,8 @@ class PartnerController extends Controller
      */
     public function index()
     {
-        $partner = DB::table('partner') -> get();
-
-        return view('partner', ['partner' => $partner]);
+        $data = Partner::all();
+        return response()->json($data, 200);
     }
 
     /**
@@ -53,13 +52,13 @@ class PartnerController extends Controller
 
     public function search(Request $request)
 	{
-		$search = $request->search;
+        $search = $request->search;
 
-		$partner = DB::table('partner')
+		$partner = DB::table('partners')
 		->where('name','like',"%".$search."%")
 		->paginate();
 
-		return view('index',['name' => $partner]);
+        return response()->json($partner, 200);
 	}
 
     /**

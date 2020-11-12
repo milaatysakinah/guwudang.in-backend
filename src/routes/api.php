@@ -33,7 +33,7 @@ Route::delete('product','App\Http\Controllers\ProductController@destroy');
 Route::resource('orderitem', 'App\Http\Controllers\OrderItemController');
 
 Route::resource('partner', 'App\Http\Controllers\PartnerController');
-Route::get('partner','App\Http\Controllers\PartnerController@search');
+Route::get('searchPartner','App\Http\Controllers\PartnerController@search');
 
 Route::resource('invoice', 'App\Http\Controllers\InvoicesController');
 
