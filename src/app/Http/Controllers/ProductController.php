@@ -87,7 +87,7 @@ class ProductController extends Controller
 		//->paginate();
         $product = Product::where('product_name', 'LIKE', '%'.$search.'%')->get();
         
-        return response()->json($search, 200);
+        return response()->json($product, 200);
     }
 
     public function product(){
