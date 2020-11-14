@@ -54,9 +54,7 @@ class PartnerController extends Controller
 	{
         $search = $request->search;
 
-		$partner = DB::table('partners')
-		->where('name','like',"%".$search."%")
-		->paginate();
+        $partner = Partner::where('name', 'LIKE', '%'.$search.'%')->get();
 
         return response()->json($partner, 200);
 	}
