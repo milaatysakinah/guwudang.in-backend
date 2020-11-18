@@ -21,6 +21,8 @@ class ProductSeeder extends Seeder
             'product_name' => 'Baju Badut',
             'price' => 200000,
             'units' => "Kg",
+            'description' => 'Ini Deskripsi product 1',
+            'product_picture' => '/img/',
         ]);
     }
 }

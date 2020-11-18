@@ -15,11 +15,14 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         DB::table('products')->insert([
             'product_type_id' => $request->product_type_id,
             'user_id' => $request->user_id,
             'product_name' => $request->product_name,
+            'description' => $request->description,
+            'product_picture' => $request->product_picture,
             'price' => $request->price,
             'units' => $request->units,
             'created_at' => date('Y-m-d H:i:s'),
@@ -29,11 +32,13 @@ class ProductController extends Controller
         return "New Product Created";
     }
 
-    public function index(){
+    public function index()
+    {
         return Product::all();
     }
 
-    public function create(Request $request){
+    public function create(Request $request)
+    {
         /*$product = new Product;
 
         $product ->id_product_type = $request->id_product_type;
@@ -48,14 +53,16 @@ class ProductController extends Controller
         echo "View Create";
     }
 
-    public function destroy($id){
+    public function destroy($id)
+    {
         $product = Product::find($id);
-        $product ->delete();
+        $product->delete();
 
         return "Product Deleted";
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $product = Product::find($id);
 
         $product->product_type_id = $request->product_type_id;
@@ -63,45 +70,63 @@ class ProductController extends Controller
         $product->product_name = $request->product_name;
         $product->price = $request->price;
         $product->units = $request->units;
+        $product->description = $request->description;
+        $product->product_picture = $request->product_picture;
         $product->updated_at = date('Y-m-d H:i:s');
         $product->save();
 
         return "Product Updated";
     }
 
-    public function show(Product $product){
+    public function show($id)
+    {
+        $product = Product::find($id);
+
         return response()->json($product);
     }
 
-    public function edit($id){
+    public function edit($id)
+    {
         echo 'edit_product';
     }
 
     public function search(Request $request)
-	{
+    {
         $search = $request->search;
-		//$search = $request->getContent();
+        $id = $request->id;
+        //$search = $request->getContent();
         //$search = explode("search=", $search);
-		//$product = DB::table('products')
-		//->where('product_name','like',"%".$search."%")
-		//->paginate();
-        $product = Product::where('product_name', 'LIKE', '%'.$search.'%')->get();
-        
+        //$product = DB::table('products')
+        //->where('product_name','like',"%".$search."%")
+        //->paginate();
+        $product = Product::where('user_id', $id) 
+                            ->where('product_name', 'LIKE', '%' . $search . '%')->get();
+
         return response()->json($product, 200);
     }
 
-    public function product(){
+    public function searchByUserID(Request $request)
+    {
+        $id = $request->id;
+        $product = Product::where('user_id', $id)->get();
+
+        return response()->json($product, 200);
+    }
+
+    public function product()
+    {
         $data = Product::all();
         return response()->json($data, 200);
     }
 
-    public function productAuth(){
+    public function productAuth()
+    {
         $data = "Welcome " . Auth::User()->username;
         return response()->json($data, 200);
     }
 
     //public function __invoke(Request $request)
     //{
-        //
+    //
     //}
 }

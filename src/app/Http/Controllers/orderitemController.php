@@ -1,9 +1,11 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\OrderItem;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class OrderItemController extends Controller
 {
@@ -14,9 +16,7 @@ class OrderItemController extends Controller
      */
     public function index()
     {
-        $oreder_items = DB::table('order_items') -> get();
-
-        return view('order_items', ['order_items' => $order_items]);
+        return OrderItem::all();
     }
 
     /**
@@ -37,8 +37,8 @@ class OrderItemController extends Controller
         ];
 
         $this->validate($request, [
-			'transaction_type_id' => 'required',
-            'transaction_date' => 'required'|date,
+            'transaction_type_id' => 'required',
+            'transaction_date' => 'required' | date,
             'order_quantity' => 'required|numaric'
         ], $messages);
 
@@ -49,7 +49,7 @@ class OrderItemController extends Controller
             'order_quantity' => $request->order_quantity,
         ]);
 
-        return view('proses',['data' => $request]);
+        return view('proses', ['data' => $request]);
     }
 
     /**
@@ -83,6 +83,37 @@ class OrderItemController extends Controller
     public function show(OrderItem $order_item)
     {
         return response()->json($order_item);
+    }
+
+    public function searchByUserID(Request $request)
+    {
+        $id = $request->id;
+        //$orderitem = OrderItem::where('user_id', $id)->get();
+        $orderitem = DB::table('order_items')
+                    -> join('invoices', 'invoice_id', '=', 'invoices.id') 
+                    -> where('user_id', $id) 
+                    -> get();
+
+        return response()->json($orderitem, 200);
+    }
+
+    public function weeklyData(Request $request)
+    {
+        $start = Carbon::now()->startOfWeek()->startOfDay();
+        $end = Carbon::now()->endOfWeek()->endOfDay();
+        $id = $request->id;
+        $type = $request->type;
+
+        //$orderitem = OrderItem::whereBetween('transaction_date', [$start, $end]) ->groupBy('transaction_date') ->get();
+        $orderitem = DB::table('order_items') 
+                    -> select(DB::raw('count(*) as total'))
+                    -> join('invoices', 'invoice_id', '=', 'invoices.id') 
+                    -> where('user_id', $id) 
+                    -> whereBetween('transaction_date', [$start, $end]) 
+                    -> where('transaction_type_id', $type) 
+                    -> groupBy('transaction_date') -> get();
+
+        return response()->json($orderitem, 200);
     }
 
     /**
@@ -127,9 +158,8 @@ class OrderItemController extends Controller
     public function destroy($id)
     {
         $order_items = OrderItem::find($id);
-        $order_items ->delete();
+        $order_items->delete();
 
         return "This Order Item has been Deleted";
     }
 }
-

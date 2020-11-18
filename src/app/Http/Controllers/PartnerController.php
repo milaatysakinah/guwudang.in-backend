@@ -53,11 +53,21 @@ class PartnerController extends Controller
     public function search(Request $request)
 	{
         $search = $request->search;
+        $id = $request->id;
 
-        $partner = Partner::where('name', 'LIKE', '%'.$search.'%')->get();
+        $partner = Partner::where('user_id', $id)
+                            ->where('name', 'LIKE', '%'.$search.'%')->get();
 
         return response()->json($partner, 200);
-	}
+    }
+    
+    public function searchByUserID(Request $request)
+    {
+        $id = $request->id;
+        $partner = Partner::where('user_id', $id)->get();
+
+        return response()->json($partner, 200);
+    }
 
     /**
      * Store a newly created resource in storage.

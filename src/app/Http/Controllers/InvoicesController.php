@@ -88,6 +88,14 @@ class InvoicesController extends Controller
         return response()->json($invoice);
     }
 
+    public function searchByUserID(Request $request)
+    {
+        $id = $request->id;
+        $invoice = Invoice::where('user_id', $id)->get();
+
+        return response()->json($invoice, 200);
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

@@ -21,6 +21,8 @@ class CreateProductsTable extends Migration
             //$table->string("product_quantity");
             $table->double("price",8,2);
             $table->string("units");
+            $table->string('description');
+            $table->string('product_picture');
             // $table->string("description");
             //$table->string("product_picture");
             $table->timestamps();
