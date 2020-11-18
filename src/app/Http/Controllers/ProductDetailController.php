@@ -43,8 +43,6 @@ class ProductDetailController extends Controller
         DB::table('product_details')->insert([
             'product_id' => $request->product_id,
             'product_quantity' => $request->product_quantity,
-            'description' => $request->description,
-            'product_picture' => $request->product_picture,
             'in_date' => $request->in_date,
             'exp_date' => $request->exp_date,
             'created_at' => date('Y-m-d H:i:s'),
@@ -60,9 +58,11 @@ class ProductDetailController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(ProductDetail $productDetail)
+    public function show(Request $request)
     {
         //
+        $productDetail = ProductDetail::find($request->id);
+
         return response()->json($productDetail);
     }
 
@@ -92,8 +92,6 @@ class ProductDetailController extends Controller
 
         $productDetail->product_id = $request->product_id;
         $productDetail->product_quantity = $request->product_quantity;
-        $productDetail->description = $request->description;
-        $productDetail->product_picture = $request->product_picture;
         $productDetail->in_date = $request->in_date;
         $productDetail->exp_date = $request->exp_date;
         $productDetail->updated_at = date('Y-m-d H:i:s');
@@ -115,5 +113,18 @@ class ProductDetailController extends Controller
         $product ->delete();
 
         return "Product Detail Deleted";
+    }
+
+    public function searchProductID(Request $request)
+	{
+        $search = $request->search;
+		//$search = $request->getContent();
+        //$search = explode("search=", $search);
+		//$product = DB::table('products')
+		//->where('product_name','like',"%".$search."%")
+		//->paginate();
+        $product = ProductDetail::where('product_id', $search)->get();
+        
+        return response()->json($product, 200);
     }
 }

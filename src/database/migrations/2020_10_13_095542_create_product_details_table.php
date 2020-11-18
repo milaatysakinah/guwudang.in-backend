@@ -17,8 +17,6 @@ class CreateProductDetailsTable extends Migration
             $table->id();
             $table->foreignId('product_id')->constrained('products')->onDelete("cascade");
             $table->integer('product_quantity');
-            $table->string('description');
-            $table->string('product_picture');
             $table->date('in_date');
             $table->date('exp_date');
             $table->timestamps();
