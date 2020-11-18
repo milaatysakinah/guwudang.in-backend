@@ -105,13 +105,26 @@ class OrderItemController extends Controller
         $type = $request->type;
 
         //$orderitem = OrderItem::whereBetween('transaction_date', [$start, $end]) ->groupBy('transaction_date') ->get();
-        $orderitem = DB::table('order_items') 
-                    -> select(DB::raw('count(*) as total'))
-                    -> join('invoices', 'invoice_id', '=', 'invoices.id') 
-                    -> where('user_id', $id) 
-                    -> whereBetween('transaction_date', [$start, $end]) 
-                    -> where('transaction_type_id', $type) 
-                    -> groupBy('transaction_date') -> get();
+        // $orderitem = DB::table('order_items') 
+        //             -> select(DB::raw('count(*) as total'))
+        //             -> join('invoices', 'invoice_id', '=', 'invoices.id') 
+        //             -> where('user_id', $id) 
+        //             -> whereBetween('transaction_date', [$start, $end]) 
+        //             -> where('transaction_type_id', $type) 
+        //             -> groupBy('transaction_date') -> get();
+
+         for($i = 0; $i < 7; $i++){
+              $orderitem[$i] = DB::table('order_items') 
+                              -> select(DB::raw('count(*) as total'))
+                              -> join('invoices', 'invoice_id', '=', 'invoices.id') 
+                              -> where('user_id', $id) 
+                              -> where('transaction_date', $start) 
+                              -> where('transaction_type_id', $type)
+                              -> get();
+            
+              //$start = date('Y-m-d', strtotime($start. + ' + 1 day'));
+              $start = date_add($start, date_interval_create_from_date_string("1 days"));
+          }
 
         return response()->json($orderitem, 200);
     }
