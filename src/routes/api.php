@@ -22,6 +22,7 @@ Route::resource('product', 'App\Http\Controllers\ProductController');
 Route::get('searchProduct','App\Http\Controllers\ProductController@search');
 Route::get('searchProductByUserID','App\Http\Controllers\ProductController@searchByUserID');
 Route::get('product','App\Http\Controllers\ProductController@product');
+Route::get('productStock','App\Http\Controllers\ProductController@productStock');
 Route::get('productall', 'App\Http\Controllers\ProductController@productAuth')->middleware('jwt.verify');
 
 Route::resource('users', 'App\Http\Controllers\UserController');

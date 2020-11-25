@@ -113,6 +113,21 @@ class ProductController extends Controller
         return response()->json($product, 200);
     }
 
+    public function productStock(Request $request)
+    {
+        $id = $request->id;
+        //$product = Product::where('user_id', $id)->get();
+
+        $product = DB::table('products')
+        -> leftJoin('product_details', 'product_details.product_id', '=', 'products.id') 
+        -> select('products.id', 'product_name', 'price', 'product_picture', DB::raw('sum(product_details.product_quantity) as total'))
+        -> where('user_id', $id) 
+        -> groupBy('products.id')
+        -> get();
+
+        return response()->json($product, 200);
+    }
+
     public function product()
     {
         $data = Product::all();
