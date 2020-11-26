@@ -122,7 +122,7 @@ class ProductController extends Controller
         -> leftJoin('product_details', 'product_details.product_id', '=', 'products.id') 
         -> select('products.id', 'product_name', 'price', 'product_picture', DB::raw('sum(product_details.product_quantity) as total'))
         -> where('user_id', $id) 
-        -> groupBy('products.id')
+        -> groupBy('products.id', 'products.product_name', 'products.price', 'products.product_picture') 
         -> get();
 
         return response()->json($product, 200);
