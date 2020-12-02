@@ -31,6 +31,9 @@ class LoginController extends Controller
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email|max:255|unique:users',
             'username' => 'required|string|max:255',
+            'phoneNumber' => 'required|string|max:255',
+            'address' => 'required|string|max:500',
+            'companyName' => 'required|string|max:255',
             'password' => 'required|string|min:6|confirmed',
         ]);
 
@@ -41,7 +44,9 @@ class LoginController extends Controller
         $user = User::create([
             'email' => $request->get('email'),
             'username' => $request->get('username'),
-            'company_name' => "",
+            'address' => $request->get('address'),
+            'phone_number' => $request->get('phoneNumber'),
+            'company_name' => $request->get('companyName'),
             'profile_picture' => "",
             'password' => Hash::make($request->get('password')),
         ]);

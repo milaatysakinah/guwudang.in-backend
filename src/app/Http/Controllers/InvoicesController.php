@@ -91,7 +91,16 @@ class InvoicesController extends Controller
     public function searchByUserID(Request $request)
     {
         $id = $request->id;
-        $invoice = Invoice::where('user_id', $id)->get();
+        //$invoice = Invoice::where('user_id', $id)->get();
+
+        $invoice = DB::table('invoices') 
+                    -> join('partners', 'invoices.partner_id', '=', 'partners.id')
+                    -> join('status_invoices', 'invoices.status_invoice_id', '=', 'status_invoices.id')
+                    -> join('order_items', 'order_items.invoice_id', '=', 'invoices.id')
+                    -> select('invoices.id', 'partners.name', 'status_invoices.status', 'invoices.created_at', DB::raw('sum(order_items.order_quantity) as total')) 
+                    -> where('invoices.user_id', $id)
+                    -> groupBy('invoices.id') 
+                    -> get();
 
         return response()->json($invoice, 200);
     }
