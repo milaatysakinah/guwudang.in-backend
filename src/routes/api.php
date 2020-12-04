@@ -41,6 +41,7 @@ Route::get('searchPartner','App\Http\Controllers\PartnerController@search');
 Route::get('searchPartnerByUserID','App\Http\Controllers\PartnerController@searchByUserID');
 
 Route::resource('invoice', 'App\Http\Controllers\InvoicesController');
+Route::get('searchInvoice','App\Http\Controllers\InvoicesController@search');
 Route::get('searchInvoiceByUserID','App\Http\Controllers\InvoicesController@searchByUserID');
 
 Route::post('login', 'App\Http\Controllers\LoginController@login');

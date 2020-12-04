@@ -96,8 +96,10 @@ class PartnerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Partner $partner)
+    public function show($id)
     {
+        $partner = Partner::find($id);
+
         return response()->json($partner);
     }
 

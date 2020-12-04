@@ -96,9 +96,30 @@ class InvoicesController extends Controller
         $invoice = DB::table('invoices') 
                     -> join('partners', 'invoices.partner_id', '=', 'partners.id')
                     -> join('status_invoices', 'invoices.status_invoice_id', '=', 'status_invoices.id')
-                    -> join('order_items', 'order_items.invoice_id', '=', 'invoices.id')
+                    -> leftJoin('order_items', 'order_items.invoice_id', '=', 'invoices.id')
                     -> select('invoices.id', 'partners.name', 'status_invoices.status', 'invoices.created_at', DB::raw('sum(order_items.order_quantity) as total')) 
                     -> where('invoices.user_id', $id)
+                    -> groupBy('invoices.id') 
+                    -> get();
+
+        return response()->json($invoice, 200);
+    }
+
+    public function search(Request $request)
+    {
+        $search = $request->search;
+        $id = $request->id;
+
+        //$invoice = Invoice::where('user_id', $id) 
+        //                    ->where('id', 'LIKE', '%' . $search . '%')->get();
+
+        $invoice = DB::table('invoices') 
+                    -> join('partners', 'invoices.partner_id', '=', 'partners.id')
+                    -> join('status_invoices', 'invoices.status_invoice_id', '=', 'status_invoices.id')
+                    -> leftJoin('order_items', 'order_items.invoice_id', '=', 'invoices.id')
+                    -> select('invoices.id', 'partners.name', 'status_invoices.status', 'invoices.created_at', DB::raw('sum(order_items.order_quantity) as total')) 
+                    -> where('invoices.user_id', $id)
+                    -> where('invoices.id', 'LIKE', '%' . $search . '%')
                     -> groupBy('invoices.id') 
                     -> get();
 
@@ -152,7 +173,7 @@ class InvoicesController extends Controller
         return "Invoice Deleted";
     }
 
-    public function search(Request $request)
+    /*public function search(Request $request)
 	{
 		$search = $request->search;
 
@@ -161,7 +182,7 @@ class InvoicesController extends Controller
 		->paginate();
 
 		return view('index',['name' => $invoice]);
-    }
+    }*/
     
     public function __invoke(Request $request)
     {
