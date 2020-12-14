@@ -35,6 +35,8 @@ Route::delete('product','App\Http\Controllers\ProductController@destroy');
 Route::resource('orderitem', 'App\Http\Controllers\OrderItemController');
 Route::get('searchOrderItemByUserID','App\Http\Controllers\OrderItemController@searchByUserID');
 Route::get('weeklyOrderItem','App\Http\Controllers\OrderItemController@weeklyData');
+Route::get('orderItemIN','App\Http\Controllers\OrderItemController@orderIN');
+Route::get('orderItemOUT','App\Http\Controllers\OrderItemController@orderOUT');
 
 Route::resource('partner', 'App\Http\Controllers\PartnerController');
 Route::get('searchPartner','App\Http\Controllers\PartnerController@search');

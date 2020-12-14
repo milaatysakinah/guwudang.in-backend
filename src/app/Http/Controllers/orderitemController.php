@@ -97,6 +97,34 @@ class OrderItemController extends Controller
         return response()->json($orderitem, 200);
     }
 
+    public function orderIN(Request $request){
+        $id = $request->id;
+
+        $orderitem = DB::table('order_items')
+                    -> join('invoices', 'invoice_id', '=', 'invoices.id')
+                    -> join('transaction_types', 'transaction_type_id', '=', 'transaction_types.id') 
+                    -> select('order_items.id', 'order_items.invoice_id', 'order_items.product_id', 'order_items.transaction_type_id', 'order_items.transaction_date', 'order_items.order_quantity', 'order_items.created_at', 'order_items.updated_at')
+                    -> where('user_id', $id)
+                    -> where('transaction_name', 'in') 
+                    -> get(); 
+                    
+        return response()->json($orderitem, 200);
+    }
+
+    public function orderOUT(Request $request){
+        $id = $request->id;
+
+        $orderitem = DB::table('order_items')
+                    -> join('invoices', 'invoice_id', '=', 'invoices.id')
+                    -> join('transaction_types', 'transaction_type_id', '=', 'transaction_types.id') 
+                    -> select('order_items.id', 'order_items.invoice_id', 'order_items.product_id', 'order_items.transaction_type_id', 'order_items.transaction_date', 'order_items.order_quantity', 'order_items.created_at', 'order_items.updated_at')
+                    -> where('user_id', $id)
+                    -> where('transaction_name', 'out') 
+                    -> get(); 
+                    
+        return response()->json($orderitem, 200);
+    }
+
     public function weeklyData(Request $request)
     {
         $start = Carbon::now()->startOfWeek()->startOfDay();
