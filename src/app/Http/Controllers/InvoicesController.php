@@ -99,7 +99,7 @@ class InvoicesController extends Controller
                     -> leftJoin('order_items', 'order_items.invoice_id', '=', 'invoices.id')
                     -> select('invoices.id', 'partners.name', 'status_invoices.status', 'invoices.created_at', DB::raw('sum(order_items.order_quantity) as total')) 
                     -> where('invoices.user_id', $id)
-                    -> groupBy('invoices.id') 
+                    -> groupBy('invoices.id', 'partners.name', 'status_invoices.status', 'invoices.created_at')
                     -> get();
 
         return response()->json($invoice, 200);
