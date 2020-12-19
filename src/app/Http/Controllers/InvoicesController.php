@@ -188,4 +188,20 @@ class InvoicesController extends Controller
     {
         //
     }
+
+    public function detail_invoice(Request $request)
+    {
+        $id = $request->id;
+        $detail_invoice = $request->detail_invoice;
+        $invoice = DB::table('invoices') 
+                    -> join('partners', 'invoices.partner_id', '=', 'partners.id')
+                    -> join('status_invoices', 'invoices.status_invoice_id', '=', 'status_invoices.id')
+                    -> leftJoin('order_items', 'order_items.invoice_id', '=', 'invoices.id')
+                    -> select('partners.name', 'status_invoices.status') 
+                    -> where('invoices.user_id', $id)
+                    -> where('invoices.id', $detail_invoice)
+                    -> get();
+
+        return response()->json($invoice, 200);
+    }
 }
