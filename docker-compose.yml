@@ -1,34 +1,20 @@
 version: '3'
 
 networks: 
-    laravel:
+    guwudangin:
+        name : guwudangin
 
 
 services: 
-    nginx:
-        image: nginx:stable-alpine
-        command: nginx -g "daemon off;"
-        container_name: nginx 
-        ports: 
-            - "8080:80"
-        volumes:
-            - ./src/public:/var/www/html/public
-            - ./nginx:/etc/nginx/conf.d
-        depends_on: 
-            - php
-            - mysql
-        networks: 
-            - laravel
-
     mysql:
         image: mysql:5.7.31
         container_name: mysql
         restart: unless-stopped
         tty: true
         ports: 
-            - "3306:3306"
+            - "3307:3306"
         volumes: 
-            - mysql-data:/var/lib/mysql
+            - ./mysql:/docker-entrypoint-initdb.d
         environment: 
             MYSQL_DATABASE: ${DB_DATABASE}
             MYSQL_USER: ${DB_USERNAME}
@@ -37,19 +23,13 @@ services:
             SERVICE_TAGS: dev
             SERVICE_NAME: mysql
         networks: 
-            - laravel
-        
+            - guwudangin
+
     php:
-        build: 
-            context: .
-            dockerfile: Dockerfile
+        image: izzatbey/app-guwudangin:1.1
         container_name: php
-        volumes: 
-            - ./src:/var/www/html
+        working_dir: /var/www/html
         ports: 
-            - "9000:9000"
+            - "8080:80"
         networks: 
-            - laravel
-volumes: 
-    mysql-data:
-        driver: local
+            - guwudangin
