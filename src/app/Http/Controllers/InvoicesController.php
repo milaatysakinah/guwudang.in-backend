@@ -196,10 +196,25 @@ class InvoicesController extends Controller
         $invoice = DB::table('invoices') 
                     -> join('partners', 'invoices.partner_id', '=', 'partners.id')
                     -> join('status_invoices', 'invoices.status_invoice_id', '=', 'status_invoices.id')
-                    -> leftJoin('order_items', 'order_items.invoice_id', '=', 'invoices.id')
-                    -> select('partners.name', 'status_invoices.status') 
+                    -> select('invoices.id', 'partners.name', 'status_invoices.status') 
                     -> where('invoices.user_id', $id)
                     -> where('invoices.id', $detail_invoice)
+                    -> groupBy('invoices.id', 'partners.name', 'status_invoices.status')
+                    -> get();
+
+        return response()->json($invoice, 200);
+    }
+
+    public function detail_order(Request $request)
+    {
+        $id = $request->id;
+        $detail_order = $request->detail_order;
+        $invoice = DB::table('invoices') 
+                    -> leftJoin('order_items', 'order_items.invoice_id', '=', 'invoices.id')
+                    -> join('products', 'product_id', '=', 'products.id')
+                    -> select('invoices.id', 'product_picture', 'product_name', 'price', 'units') 
+                    -> where('invoices.user_id', $id)
+                    -> where('invoices.id', $detail_order)
                     -> get();
 
         return response()->json($invoice, 200);
