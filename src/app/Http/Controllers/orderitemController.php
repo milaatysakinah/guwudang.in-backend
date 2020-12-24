@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\OrderItem;
+use App\Models\ProductDetail;
+use App\Models\TransactionType;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
@@ -60,7 +62,29 @@ class OrderItemController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // $productDetail = ProductDetail::where('product_id',$request->product_id)
+        // ->update([
+        //    'product_quantity' => ('product_quantity') + $request->order_quantity,
+        //  ]);
+        //return response()->json($request, 200);
+        $productDetailID = ProductDetail::where('product_id', $request->product_id)->first()->id;
+        $productDetail = ProductDetail::find($productDetailID);
+        $transactionType = TransactionType::find($request->transaction_type_id);
+        // return response()->json($productDetail, 200);
+        //$productDetail->product_id = $productDetail->product_id;
+        if($request->transaction_type_id == 1) {
+            $productDetail->product_quantity = ($productDetail->product_quantity) + ($request->order_quantity);
+        } else {
+            $productDetail->product_quantity = ($productDetail->product_quantity) - ($request->order_quantity);
+            if($productDetail->product_quantity < 0) {
+                return  response()->json($productDetail, 304);
+            }
+        }
+        $productDetail->updated_at = date('Y-m-d H:i:s');
+        $productDetail->save();
+
+        //return response()->json($productDetail, 200);
+
         DB::table('order_items')->insert([
             'invoice_id' => $request->invoice_id,
             'product_id' => $request->product_id,

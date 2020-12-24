@@ -212,12 +212,14 @@ class InvoicesController extends Controller
         $invoice = DB::table('invoices') 
                     -> leftJoin('order_items', 'order_items.invoice_id', '=', 'invoices.id')
                     -> join('products', 'product_id', '=', 'products.id')
-                    -> select('invoices.id', 'product_picture', 'product_name', 'price', DB::raw('sum(order_items.order_quantity) as total')) 
+                    -> join('transaction_types', 'order_items.transaction_type_id', '=', 'transaction_types.id')
+                    -> select('invoices.id', 'product_picture', 'product_name', DB::raw('(price*order_quantity) as price'), 'order_quantity', 'transaction_name')
                     -> where('invoices.user_id', $id)
                     -> where('invoices.id', $detail_order)
-                    -> groupBy('invoices.id', 'product_picture', 'product_name', 'price')
                     -> get();
 
         return response()->json($invoice, 200);
+
+        //-> select('invoices.id', 'product_picture', 'product_name', 'price', DB::raw('sum(order_items.order_quantity) as total')) 
     }
 }
