@@ -104,9 +104,11 @@ class OrderItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(OrderItem $order_item)
+    public function show($id)
     {
-        return response()->json($order_item);
+        $order_items = OrderItem::find($id);
+
+        return response()->json($order_items);
     }
 
     public function searchByUserID(Request $request)
@@ -199,17 +201,35 @@ class OrderItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        $order_items = OrderItem::find($id);
 
-        $order_items->invoice_id = $request->invoice_id;
-        $order_items->product_id = $request->product_id;
-        $order_items->transaction_type_id = $request->transaction_type_id;
-        $order_items->order_quantity = $request->order_quantity;
-        $order_items->updated_at = date('Y-m-d H:i:s');
+        $productDetailID = ProductDetail::where('product_id', $request->product_id)->first()->id;
+        $productDetail = ProductDetail::find($productDetailID);
+        $transactionType = TransactionType::find($request->transaction_type_id);
+        $order_items = OrderItem::find($request->id);
+        // return response()->json($productDetail, 200);
+        //$productDetail->product_id = $productDetail->product_id;
+        if($request->transaction_type_id == 1) {
+            $productDetail->product_quantity = (($productDetail->product_quantity) + (($request->order_quantity) - ($order_items->order_quantity)));
+        } else {
+            $productDetail->product_quantity = (($productDetail->product_quantity) - (($request->order_quantity) - ($order_items->order_quantity)));
+            if($productDetail->product_quantity < 0) {
+                return  response()->json($productDetail, 304);
+            }
+        }
+        $productDetail->updated_at = date('Y-m-d H:i:s');
+        $productDetail->save();
 
-        $order_items->save();
+        $order_item = OrderItem::find($request->id);
+
+        // $order_items->invoice_id = $request->invoice_id;
+        $order_item->product_id = $request->product_id;
+        $order_item->transaction_type_id = $request->transaction_type_id;
+        $order_item->order_quantity = $request->order_quantity;
+        $order_item->updated_at = date('Y-m-d H:i:s');
+
+        $order_item->save();
 
         return "Order Items Updated";
     }
@@ -222,6 +242,25 @@ class OrderItemController extends Controller
      */
     public function destroy($id)
     {
+        $order_items = OrderItem::find($id);
+
+        $productDetailID = ProductDetail::where('product_id', $order_items->product_id)->first()->id;
+        $productDetail = ProductDetail::find($productDetailID);
+        $transactionType = TransactionType::find($order_items->transaction_type_id);
+        //$order_items = OrderItem::find($request->id);
+        // return response()->json($productDetail, 200);
+        //$productDetail->product_id = $productDetail->product_id;
+        if($order_items->transaction_type_id == 1) {
+            $productDetail->product_quantity = (($productDetail->product_quantity) - (($order_items->order_quantity)));
+        } else {
+            $productDetail->product_quantity = (($productDetail->product_quantity) + (($order_items->order_quantity)));
+            if($productDetail->product_quantity < 0) {
+                return  response()->json($productDetail, 304);
+            }
+        }
+        $productDetail->updated_at = date('Y-m-d H:i:s');
+        $productDetail->save();
+
         $order_items = OrderItem::find($id);
         $order_items->delete();
 
