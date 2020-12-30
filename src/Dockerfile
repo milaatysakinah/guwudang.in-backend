@@ -16,7 +16,7 @@ RUN apk -U --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/com
         php-mbstring \
         php-openssl \
         php-opcache \
-        php-pdo_pgsql \
+        php-pdo_mysql \
         php-phar \
         php-session \
         php-simplexml \
