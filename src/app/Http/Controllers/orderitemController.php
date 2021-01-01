@@ -7,6 +7,7 @@ use App\Models\OrderItem;
 use App\Models\ProductDetail;
 use App\Models\TransactionType;
 use Illuminate\Support\Facades\DB;
+use Auth;
 use Carbon\Carbon;
 
 class OrderItemController extends Controller
@@ -18,7 +19,7 @@ class OrderItemController extends Controller
      */
     public function index()
     {
-        return OrderItem::all();
+        //return OrderItem::all();
     }
 
     /**
@@ -28,7 +29,7 @@ class OrderItemController extends Controller
      */
     public function create()
     {
-        return view('create');
+       // return view('create');
     }
 
     public function proses(Request $request)
@@ -62,40 +63,46 @@ class OrderItemController extends Controller
      */
     public function store(Request $request)
     {
-        // $productDetail = ProductDetail::where('product_id',$request->product_id)
-        // ->update([
-        //    'product_quantity' => ('product_quantity') + $request->order_quantity,
-        //  ]);
-        //return response()->json($request, 200);
-        $productDetailID = ProductDetail::where('product_id', $request->product_id)->first()->id;
-        $productDetail = ProductDetail::find($productDetailID);
-        $transactionType = TransactionType::find($request->transaction_type_id);
-        // return response()->json($productDetail, 200);
-        //$productDetail->product_id = $productDetail->product_id;
-        if($request->transaction_type_id == 1) {
-            $productDetail->product_quantity = ($productDetail->product_quantity) + ($request->order_quantity);
-        } else {
-            $productDetail->product_quantity = ($productDetail->product_quantity) - ($request->order_quantity);
-            if($productDetail->product_quantity < 0) {
-                return  response()->json($productDetail, 304);
+        $userId = Invoice::where('id', $request->invoice_id);
+        
+        if($userId[0]["user_id"] == Auth::User()->id){
+            // $productDetail = ProductDetail::where('product_id',$request->product_id)
+            // ->update([
+            //    'product_quantity' => ('product_quantity') + $request->order_quantity,
+            //  ]);
+            //return response()->json($request, 200);
+            $productDetailID = ProductDetail::where('product_id', $request->product_id)->first()->id;
+            $productDetail = ProductDetail::find($productDetailID);
+            $transactionType = TransactionType::find($request->transaction_type_id);
+            // return response()->json($productDetail, 200);
+            //$productDetail->product_id = $productDetail->product_id;
+            if($request->transaction_type_id == 1) {
+                $productDetail->product_quantity = ($productDetail->product_quantity) + ($request->order_quantity);
+            } else {
+                $productDetail->product_quantity = ($productDetail->product_quantity) - ($request->order_quantity);
+                if($productDetail->product_quantity < 0) {
+                    return  response()->json($productDetail, 304);
+                }
             }
-        }
-        $productDetail->updated_at = date('Y-m-d H:i:s');
-        $productDetail->save();
+            $productDetail->updated_at = date('Y-m-d H:i:s');
+            $productDetail->save();
 
-        //return response()->json($productDetail, 200);
+            //return response()->json($productDetail, 200);
 
-        DB::table('order_items')->insert([
-            'invoice_id' => $request->invoice_id,
-            'product_id' => $request->product_id,
-            'transaction_type_id' => $request->transaction_type_id,
-            'transaction_date' => date('Y-m-d H:i:s'),
-            'order_quantity' => $request->order_quantity,
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s'),
-        ]);
+            DB::table('order_items')->insert([
+                'invoice_id' => $request->invoice_id,
+                'product_id' => $request->product_id,
+                'transaction_type_id' => $request->transaction_type_id,
+                'transaction_date' => date('Y-m-d H:i:s'),
+                'order_quantity' => $request->order_quantity,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ]);
 
-        return "New OrderItem Created";
+            return "New OrderItem Created";
+        }else{
+            return "Not Allowed";
+        }  
     }
 
     /**
@@ -106,14 +113,22 @@ class OrderItemController extends Controller
      */
     public function show($id)
     {
-        $order_items = OrderItem::find($id);
+        $userId = Invoice::leftJoin("order_items", "order_items.invoice_id", "=", "invoices.id")
+                    -> where('order_items.id', $id);
 
-        return response()->json($order_items);
+        if($userId[0]["user_id"] == Auth::User()->id){
+            $order_items = OrderItem::find($id);
+
+            return response()->json($order_items);
+        }else{
+            return "Not Allowed";
+        }
     }
 
     public function searchByUserID(Request $request)
     {
-        $id = $request->id;
+        //$id = $request->id;
+        $id = Auth::User()->id;
         //$orderitem = OrderItem::where('user_id', $id)->get();
         $orderitem = DB::table('order_items')
                     -> join('invoices', 'invoice_id', '=', 'invoices.id') 
@@ -124,7 +139,8 @@ class OrderItemController extends Controller
     }
 
     public function orderIN(Request $request){
-        $id = $request->id;
+        //$id = $request->id;
+        $id = Auth::User()->id;
 
         $orderitem = DB::table('order_items')
                     -> join('invoices', 'invoice_id', '=', 'invoices.id')
@@ -138,7 +154,8 @@ class OrderItemController extends Controller
     }
 
     public function orderOUT(Request $request){
-        $id = $request->id;
+        //$id = $request->id;
+        $id = Auth::User()->id;
 
         $orderitem = DB::table('order_items')
                     -> join('invoices', 'invoice_id', '=', 'invoices.id')
@@ -155,7 +172,8 @@ class OrderItemController extends Controller
     {
         $start = Carbon::now()->startOfWeek()->startOfDay();
         $end = Carbon::now()->endOfWeek()->endOfDay();
-        $id = $request->id;
+        //$id = $request->id;
+        $id = Auth::User()->id;
         $type = $request->type;
 
         //$orderitem = OrderItem::whereBetween('transaction_date', [$start, $end]) ->groupBy('transaction_date') ->get();
@@ -203,35 +221,41 @@ class OrderItemController extends Controller
      */
     public function update(Request $request)
     {
+        $userId = Invoice::leftJoin("order_items", "order_items.invoice_id", "=", "invoices.id")
+                    -> where('order_items.id', $id);
 
-        $productDetailID = ProductDetail::where('product_id', $request->product_id)->first()->id;
-        $productDetail = ProductDetail::find($productDetailID);
-        $transactionType = TransactionType::find($request->transaction_type_id);
-        $order_items = OrderItem::find($request->id);
-        // return response()->json($productDetail, 200);
-        //$productDetail->product_id = $productDetail->product_id;
-        if($request->transaction_type_id == 1) {
-            $productDetail->product_quantity = (($productDetail->product_quantity) + (($request->order_quantity) - ($order_items->order_quantity)));
-        } else {
-            $productDetail->product_quantity = (($productDetail->product_quantity) - (($request->order_quantity) - ($order_items->order_quantity)));
-            if($productDetail->product_quantity < 0) {
-                return  response()->json($productDetail, 304);
+        if($userId[0]["user_id"] == Auth::User()->id){
+            $productDetailID = ProductDetail::where('product_id', $request->product_id)->first()->id;
+            $productDetail = ProductDetail::find($productDetailID);
+            $transactionType = TransactionType::find($request->transaction_type_id);
+            $order_items = OrderItem::find($request->id);
+            // return response()->json($productDetail, 200);
+            //$productDetail->product_id = $productDetail->product_id;
+            if($request->transaction_type_id == 1) {
+                $productDetail->product_quantity = (($productDetail->product_quantity) + (($request->order_quantity) - ($order_items->order_quantity)));
+            } else {
+                $productDetail->product_quantity = (($productDetail->product_quantity) - (($request->order_quantity) - ($order_items->order_quantity)));
+                if($productDetail->product_quantity < 0) {
+                    return  response()->json($productDetail, 304);
+                }
             }
+            $productDetail->updated_at = date('Y-m-d H:i:s');
+            $productDetail->save();
+
+            $order_item = OrderItem::find($request->id);
+
+            // $order_items->invoice_id = $request->invoice_id;
+            $order_item->product_id = $request->product_id;
+            $order_item->transaction_type_id = $request->transaction_type_id;
+            $order_item->order_quantity = $request->order_quantity;
+            $order_item->updated_at = date('Y-m-d H:i:s');
+
+            $order_item->save();
+
+            return "Order Items Updated";
+        }else{
+            return "Not Allowed";
         }
-        $productDetail->updated_at = date('Y-m-d H:i:s');
-        $productDetail->save();
-
-        $order_item = OrderItem::find($request->id);
-
-        // $order_items->invoice_id = $request->invoice_id;
-        $order_item->product_id = $request->product_id;
-        $order_item->transaction_type_id = $request->transaction_type_id;
-        $order_item->order_quantity = $request->order_quantity;
-        $order_item->updated_at = date('Y-m-d H:i:s');
-
-        $order_item->save();
-
-        return "Order Items Updated";
     }
 
     /**
@@ -242,28 +266,35 @@ class OrderItemController extends Controller
      */
     public function destroy($id)
     {
-        $order_items = OrderItem::find($id);
+        $userId = Invoice::leftJoin("order_items", "order_items.invoice_id", "=", "invoices.id")
+                    -> where('order_items.id', $id);
+        
+        if($userId[0]["user_id"] == Auth::User()->id){
+            $order_items = OrderItem::find($id);
 
-        $productDetailID = ProductDetail::where('product_id', $order_items->product_id)->first()->id;
-        $productDetail = ProductDetail::find($productDetailID);
-        $transactionType = TransactionType::find($order_items->transaction_type_id);
-        //$order_items = OrderItem::find($request->id);
-        // return response()->json($productDetail, 200);
-        //$productDetail->product_id = $productDetail->product_id;
-        if($order_items->transaction_type_id == 1) {
-            $productDetail->product_quantity = (($productDetail->product_quantity) - (($order_items->order_quantity)));
-        } else {
-            $productDetail->product_quantity = (($productDetail->product_quantity) + (($order_items->order_quantity)));
-            if($productDetail->product_quantity < 0) {
-                return  response()->json($productDetail, 304);
+            $productDetailID = ProductDetail::where('product_id', $order_items->product_id)->first()->id;
+            $productDetail = ProductDetail::find($productDetailID);
+            $transactionType = TransactionType::find($order_items->transaction_type_id);
+            //$order_items = OrderItem::find($request->id);
+            // return response()->json($productDetail, 200);
+            //$productDetail->product_id = $productDetail->product_id;
+            if($order_items->transaction_type_id == 1) {
+                $productDetail->product_quantity = (($productDetail->product_quantity) - (($order_items->order_quantity)));
+            } else {
+                $productDetail->product_quantity = (($productDetail->product_quantity) + (($order_items->order_quantity)));
+                if($productDetail->product_quantity < 0) {
+                    return  response()->json($productDetail, 304);
+                }
             }
+            $productDetail->updated_at = date('Y-m-d H:i:s');
+            $productDetail->save();
+
+            $order_items = OrderItem::find($id);
+            $order_items->delete();
+
+            return "This Order Item has been Deleted";    
+        }else{
+            return "Not Allowed";
         }
-        $productDetail->updated_at = date('Y-m-d H:i:s');
-        $productDetail->save();
-
-        $order_items = OrderItem::find($id);
-        $order_items->delete();
-
-        return "This Order Item has been Deleted";
     }
 }

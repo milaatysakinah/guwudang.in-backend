@@ -5,14 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Invoice;
 use Illuminate\Support\Facades\DB;
+use Auth;
 use Carbon\Carbon;
 
 class InvoicesController extends Controller
 {
     public function invoices(Invoice $invoice)
     {
-        $invoices = $invoice->all();
-        return response()->json($invoices);
+        //$invoices = $invoice->all();
+        //return response()->json($invoices);
     }
 
     /**
@@ -22,8 +23,7 @@ class InvoicesController extends Controller
      */
     public function index()
     {
-        //
-        return Invoice::all();
+        //return Invoice::all();
     }
 
     /**
@@ -33,15 +33,15 @@ class InvoicesController extends Controller
      */
     public function create(Request $request, Invoice $invoice)
     {
+        $id = Auth::User()->id;
         $this->validate($request, [
             'partner_id' => 'required',
-            'user_id' => 'required',
             'status_invoice_id' => 'required',
         ]);
 
         $invoice->create([
             'partner_id' => $request->partner_id,
-            'user_id' => $request->user_id,
+            'user_id' => $id,
             'status_invoice_id' => $request->status_invoice_id,
             'created_at' =>  Carbon::now(),
         ]);
@@ -59,15 +59,15 @@ class InvoicesController extends Controller
     {
         //
         //this->validate($request, []);
+        $id = Auth::User()->id;
         $this->validate($request, [
             'partner_id' => 'required',
-            'user_id' => 'required',
             'status_invoice_id' => 'required',
         ]);
 
         $invoice->create([
             'partner_id' => $request->partner_id,
-            'user_id' => $request->user_id,
+            'user_id' => $id,
             'status_invoice_id' => $request->status_invoice_id,
             'created_at' =>  Carbon::now(),
             'updated_at' =>  Carbon::now(),
@@ -82,15 +82,21 @@ class InvoicesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Invoice $invoice)
+    public function show($id)
     {
         //
-        return response()->json($invoice);
+        $invoice = Invoice::find($id);
+        
+        if($invoice->user_id == Auth::User()->id)
+            return response()->json($invoice);
+        else
+            return "Not Allowed";
     }
 
     public function searchByUserID(Request $request)
     {
-        $id = $request->id;
+        //$id = $request->id;
+        $id = Auth::User()->id;
         //$invoice = Invoice::where('user_id', $id)->get();
 
         $invoice = DB::table('invoices') 
@@ -108,8 +114,8 @@ class InvoicesController extends Controller
     public function search(Request $request)
     {
         $search = $request->search;
-        $id = $request->id;
-
+        //$id = $request->id;
+        $id = Auth::User()->id;
         //$invoice = Invoice::where('user_id', $id) 
         //                    ->where('id', 'LIKE', '%' . $search . '%')->get();
 
@@ -149,12 +155,19 @@ class InvoicesController extends Controller
     {
         //
         $invoice = Invoice::find($id);
-        $invoice ->partner_id = $request->partner_id; 
-        $invoice ->user_id = $request->user_id;
-        $invoice ->status_invoice_id = $request->status_invoice_id;
-        $invoice ->updated_at = Carbon::now();
-        if($invoice->save()) {
-            return "Invoice Updated";
+
+        if($invoice->user_id == Auth::User()->id){
+            $invoice ->partner_id = $request->partner_id; 
+            $invoice ->user_id = $request->user_id;
+            $invoice ->status_invoice_id = $request->status_invoice_id;
+            $invoice ->updated_at = Carbon::now();
+            if($invoice->save()) {
+                return "Invoice Updated";
+            }else{
+                return "Invoice Update Failed";
+            }   
+        }else{
+            return "Not Allowed";
         }
     }
 
@@ -168,9 +181,14 @@ class InvoicesController extends Controller
     {
         //
         $invoice = Invoice::find($id);
-        $invoice ->delete();
+        
+        if($invoice->user_id == Auth::User()->id){
+            $invoice ->delete();
 
-        return "Invoice Deleted";
+            return "Invoice Deleted";
+        }else{
+            return "Not Allowed";
+        }
     }
 
     /*public function search(Request $request)
@@ -191,7 +209,8 @@ class InvoicesController extends Controller
 
     public function detail_invoice(Request $request)
     {
-        $id = $request->id;
+        //$id = $request->id;
+        $id = Auth::User()->id;
         $detail_invoice = $request->detail_invoice;
         $invoice = DB::table('invoices') 
                     -> join('partners', 'invoices.partner_id', '=', 'partners.id')
@@ -207,7 +226,8 @@ class InvoicesController extends Controller
 
     public function detail_order(Request $request)
     {
-        $id = $request->id;
+        //$id = $request->id;
+        $id = Auth::User()->id;
         $detail_order = $request->detail_order;
         $invoice = DB::table('invoices') 
                     -> leftJoin('order_items', 'order_items.invoice_id', '=', 'invoices.id')
