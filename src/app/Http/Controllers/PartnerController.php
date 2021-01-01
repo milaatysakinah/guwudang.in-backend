@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Partner;
+use Auth;
 use Illuminate\Support\Facades\DB;
 
 class PartnerController extends Controller
@@ -15,8 +16,8 @@ class PartnerController extends Controller
      */
     public function index()
     {
-        $data = Partner::all();
-        return response()->json($data, 200);
+        //$data = Partner::all();
+        //return response()->json($data, 200);
     }
 
     /**
@@ -53,7 +54,8 @@ class PartnerController extends Controller
     public function search(Request $request)
 	{
         $search = $request->search;
-        $id = $request->id;
+        //$id = $request->id;
+        $id = Auth::User()->id;
 
         $partner = Partner::where('user_id', $id)
                             ->where('name', 'LIKE', '%'.$search.'%')->get();
@@ -63,7 +65,8 @@ class PartnerController extends Controller
     
     public function searchByUserID(Request $request)
     {
-        $id = $request->id;
+        //$id = $request->id;
+        $id = Auth::User()->id;
         $partner = Partner::where('user_id', $id)->get();
 
         return response()->json($partner, 200);
@@ -77,8 +80,9 @@ class PartnerController extends Controller
      */
     public function store(Request $request)
     {
+        $id = Auth::User()->id;
         DB::table('partners')->insert([
-            'user_id' => $request->user_id,
+            'user_id' => $id,
             'name' => $request->name,
             'email' => $request->email,
             'address' => $request->address,
@@ -100,7 +104,10 @@ class PartnerController extends Controller
     {
         $partner = Partner::find($id);
 
-        return response()->json($partner);
+        if($partner->user_id == Auth::User()->id)
+            return response()->json($partner);
+        else
+            return "Not Allowed";
     }
 
     /**
@@ -123,18 +130,24 @@ class PartnerController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $id = Auth::User()->id;
         $partner = Partner::find($id);
 
-        $partner->user_id = $request->user_id;
-        $partner->name = $request->name;
-        $partner->email = $request->email;
-        $partner->address = $request->address;
-        $partner->phone_number = $request->phone_number;
-        $partner->updated_at = date('Y-m-d H:i:s');
-        
-        $partner->save();
+        if($partner->user_id == $id){
+            $partner->user_id = $id;
+            $partner->name = $request->name;
+            $partner->email = $request->email;
+            $partner->address = $request->address;
+            $partner->phone_number = $request->phone_number;
+            $partner->updated_at = date('Y-m-d H:i:s');
+            
+            $partner->save();
 
-        return "Partner Updated";
+            return "Partner Updated";
+        }else{
+            return "Not Allowed";
+        }
+        
     }
 
     /**
@@ -145,9 +158,15 @@ class PartnerController extends Controller
      */
     public function destroy($id)
     {
+        $id = Auth::User()->id; 
         $partner = Partner::find($id);
-        $partner ->delete();
 
-        return "Partner Deleted";
+        if($id == $partner->user_id){
+            $partner ->delete();
+
+            return "Partner Deleted";
+        }else{
+            return "Not Allowed";
+        }
     }
 }

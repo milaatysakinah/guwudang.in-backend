@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ProductDetail;
+use App\Models\Product;
 use Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -16,8 +17,7 @@ class ProductDetailController extends Controller
      */
     public function index()
     {
-        //
-        return ProductDetail::all();
+        //return ProductDetail::all();
     }
 
     /**
@@ -58,12 +58,20 @@ class ProductDetailController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request)
+    public function show($id)
     {
         //
-        $productDetail = ProductDetail::find($request->id);
+        $userId = Product::leftJoin('product_details', 'product_details.product_id', '=', 'products.id')
+                    -> where('product_details.id', $id)
+                    -> get();
 
-        return response()->json($productDetail);
+        if($userId[0]["user_id"] == Auth::User()->id){
+            $productDetail = ProductDetail::find($id);
+
+            return response()->json($productDetail);
+        }else{
+            return "Cannot Show";
+        }
     }
 
     /**
@@ -88,16 +96,24 @@ class ProductDetailController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $productDetail = ProductDetail::find($id);
+        $userId = Product::leftJoin('product_details', 'product_details.product_id', '=', 'products.id')
+                    -> where('product_details.id', $id)
+                    -> get();
 
-        $productDetail->product_id = $request->product_id;
-        $productDetail->product_quantity = $request->product_quantity;
-        $productDetail->in_date = $request->in_date;
-        $productDetail->exp_date = $request->exp_date;
-        $productDetail->updated_at = date('Y-m-d H:i:s');
-        $productDetail->save();
+        if($userId[0]["user_id"] == Auth::User()->id){
+            $productDetail = ProductDetail::find($id);
 
-        return "Product Detail Updated";   
+            $productDetail->product_id = $request->product_id;
+            $productDetail->product_quantity = $request->product_quantity;
+            $productDetail->in_date = $request->in_date;
+            $productDetail->exp_date = $request->exp_date;
+            $productDetail->updated_at = date('Y-m-d H:i:s');
+            $productDetail->save();
+
+            return "Product Detail Updated";    
+        }else{
+            return "Cannot Update";
+        } 
     }
 
     /**
@@ -109,10 +125,18 @@ class ProductDetailController extends Controller
     public function destroy($id)
     {
         //
-        $product = ProductDetail::find($id);
-        $product ->delete();
+        $userId = Product::leftJoin('product_details', 'product_details.product_id', '=', 'products.id')
+                -> where('product_details.id', $id)
+                -> get();
 
-        return "Product Detail Deleted";
+        if($userId[0]["user_id"] == Auth::User()->id){
+            $product = ProductDetail::find($id);
+            $product ->delete();
+
+            return "Product Detail Deleted";
+        }else{
+            return "Cannot Delete";
+        }
     }
 
     public function searchProductID(Request $request)
@@ -122,9 +146,16 @@ class ProductDetailController extends Controller
         //$search = explode("search=", $search);
 		//$product = DB::table('products')
 		//->where('product_name','like',"%".$search."%")
-		//->paginate();
-        $product = ProductDetail::where('product_id', $search)->get();
+        //->paginate();
+        $userId = Product::where('id', $search)
+                -> get();
+
+        if($userId[0]["user_id"] == Auth::User()->id){
+            $product = ProductDetail::where('product_id', $search)->get();
         
-        return response()->json($product, 200);
+            return response()->json($product, 200);
+        }else{
+            return "Cannot Return";
+        }
     }
 }
