@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\OrderItem;
 use App\Models\ProductDetail;
 use App\Models\TransactionType;
+use App\Models\Invoice;
 use Illuminate\Support\Facades\DB;
 use Auth;
 use Carbon\Carbon;
@@ -63,9 +64,10 @@ class OrderItemController extends Controller
      */
     public function store(Request $request)
     {
-        $userId = Invoice::where('id', $request->invoice_id);
-        
-        if($userId[0]["user_id"] == Auth::User()->id){
+        //$invoice = Invoice::where('id', $request->invoice_id);
+        $invoice = Invoice::find($request->invoice_id);
+        //return response()->json($invoice, 200);
+        if($invoice->user_id == Auth::User()->id){
             // $productDetail = ProductDetail::where('product_id',$request->product_id)
             // ->update([
             //    'product_quantity' => ('product_quantity') + $request->order_quantity,
@@ -113,10 +115,10 @@ class OrderItemController extends Controller
      */
     public function show($id)
     {
-        $userId = Invoice::leftJoin("order_items", "order_items.invoice_id", "=", "invoices.id")
-                    -> where('order_items.id', $id);
-
-        if($userId[0]["user_id"] == Auth::User()->id){
+        $orderitem = OrderItem::find($id);
+        $invoice = Invoice::find($orderitem->invoice_id);
+        //return response()->json($orderitem,200);
+        if($invoice->user_id == Auth::User()->id){
             $order_items = OrderItem::find($id);
 
             return response()->json($order_items);
@@ -221,10 +223,14 @@ class OrderItemController extends Controller
      */
     public function update(Request $request)
     {
-        $userId = Invoice::leftJoin("order_items", "order_items.invoice_id", "=", "invoices.id")
-                    -> where('order_items.id', $id);
+        //$userId = Invoice::leftJoin("order_items", "order_items.invoice_id", "=", "invoices.id")
+                    //-> where('order_items.id', $id);
 
-        if($userId[0]["user_id"] == Auth::User()->id){
+        $orderitem = OrderItem::find($request->id);
+        $invoice = Invoice::find($orderitem->invoice_id);
+        //return response()->json($orderitem,200);
+        if($invoice->user_id == Auth::User()->id){
+        //if($userId[0]["user_id"] == Auth::User()->id){
             $productDetailID = ProductDetail::where('product_id', $request->product_id)->first()->id;
             $productDetail = ProductDetail::find($productDetailID);
             $transactionType = TransactionType::find($request->transaction_type_id);
@@ -266,10 +272,9 @@ class OrderItemController extends Controller
      */
     public function destroy($id)
     {
-        $userId = Invoice::leftJoin("order_items", "order_items.invoice_id", "=", "invoices.id")
-                    -> where('order_items.id', $id);
-        
-        if($userId[0]["user_id"] == Auth::User()->id){
+        $orderitem = OrderItem::find($id);
+        $invoice = Invoice::find($orderitem->invoice_id);
+        if($invoice->user_id == Auth::User()->id){
             $order_items = OrderItem::find($id);
 
             $productDetailID = ProductDetail::where('product_id', $order_items->product_id)->first()->id;
