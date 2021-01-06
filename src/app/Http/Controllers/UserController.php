@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\File;
 
 class UserController extends Controller
 {
@@ -86,17 +88,35 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $address = $request->profile_picture;
+        $public = 'public/userpic';
         //
-        $user = User::find($id);
+        if($id == Auth::User()->id){
+            $user = User::find($id);
+            
+            if ($files = $request->file('file')) {
+                
+                //$originName = $files->getClientOriginalName();
+                $newName = $id . ".png";
+                
+                if(file_exists($public . $newName))
+                    File::delete($newName);
+                
+                $file = $files->storeAs($public, $newName);
+                
+                $address = 'http://localhost:8000/storage/userpic/' . $newName;
+            }    
 
-        $user->email = $request->email;
-        $user->username = $request->username;
-        $user->profile_picture = $request->profile_picture;
-        $user->password = Hash::make($request->get('password'));
-        $user->updated_at = date('Y-m-d H:i:s');
-        $user->save();
+            $user->email = $request->email;
+            $user->username = $request->username;
+            $user->company_name = $request->company_name;
+            $user->phone_number = $request->phone_number;
+            $user->profile_picture = $address;
+            $user->updated_at = date('Y-m-d H:i:s');
+            $user->save();
 
-        return "User Updated";
+            return "User Updated";
+        }
     }
 
     /**

@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
             'address' => 'Meteor St.',
             'phone_number' => '0811111111',
             'company_name' => 'Miero',
-            'profile_picture' => '',
+            'profile_picture' => 'http://localhost:8000/storage/userpic/default.png',
             'password' => Hash::make('kucing1'),
         ]);
         
