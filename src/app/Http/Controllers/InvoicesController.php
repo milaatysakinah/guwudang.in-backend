@@ -228,14 +228,14 @@ class InvoicesController extends Controller
     {
         //$id = $request->id;
         $id = Auth::User()->id;
-        $detail_order = $request->detail_order;
+        $id_invoice = $request->id_invoice;
         $invoice = DB::table('invoices') 
                     -> leftJoin('order_items', 'order_items.invoice_id', '=', 'invoices.id')
                     -> join('products', 'product_id', '=', 'products.id')
                     -> join('transaction_types', 'order_items.transaction_type_id', '=', 'transaction_types.id')
                     -> select('invoices.id', 'product_picture', 'product_name', DB::raw('(price*order_quantity) as price'), 'order_quantity', 'transaction_name', 'order_items.id as id_order')
                     -> where('invoices.user_id', $id)
-                    -> where('invoices.id', $detail_order)
+                    -> where('invoices.id', $id_invoice)
                     -> get();
 
         return response()->json($invoice, 200);
