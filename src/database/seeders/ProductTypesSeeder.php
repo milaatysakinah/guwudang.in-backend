@@ -17,7 +17,12 @@ class ProductTypesSeeder extends Seeder
     {
         //
         //DB::table('product_types')->truncate();
-        DB::table('product_types')->insert(['product_type_name' => 'fashion', 'created_at' => Carbon::now(),]);
-        DB::table('product_types')->insert(['product_type_name' => 'electronic', 'created_at' => Carbon::now(),]);
+        DB::table('product_types')->insert(['product_type_name' => 'Fashion', 'created_at' => Carbon::now(),]);
+        DB::table('product_types')->insert(['product_type_name' => 'Electronic', 'created_at' => Carbon::now(),]);
+        DB::table('product_types')->insert(['product_type_name' => 'Foods and Drinks', 'created_at' => Carbon::now(),]);
+        DB::table('product_types')->insert(['product_type_name' => 'Beauty and Care', 'created_at' => Carbon::now(),]);
+        DB::table('product_types')->insert(['product_type_name' => 'Health', 'created_at' => Carbon::now(),]);
+        DB::table('product_types')->insert(['product_type_name' => 'Home and Decor', 'created_at' => Carbon::now(),]);
+        DB::table('product_types')->insert(['product_type_name' => 'Accecoris', 'created_at' => Carbon::now(),]);
     }
 }

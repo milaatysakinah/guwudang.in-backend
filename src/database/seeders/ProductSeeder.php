@@ -20,7 +20,7 @@ class ProductSeeder extends Seeder
             'user_id' => 1,
             'product_name' => 'Baju Badut',
             'price' => 200000,
-            'units' => "Kg",
+            'units' => 3,
             'description' => 'Ini Deskripsi product 1',
             'product_picture' => '/img/',
         ]);

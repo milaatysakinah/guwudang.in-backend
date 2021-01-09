@@ -18,13 +18,25 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $id = Auth::User()->id;
+        $address = 'http://localhost:8000/storage/productpic/default.png';
+        $public = 'public/productpic';
+
+        if ($files = $request->file('file')) {
+
+            //$originName = $files->getClientOriginalName();
+            $newName = $request->product_name . ".png";
+
+            $file = $files->storeAs($public, $newName);
+
+            $address = 'http://localhost:8000/storage/productpic/' . $newName;
+        }
 
         DB::table('products')->insert([
             'product_type_id' => $request->product_type_id,
             'user_id' => $id,
             'product_name' => $request->product_name,
             'description' => $request->description,
-            'product_picture' => $request->product_picture,
+            'product_picture' => $address,
             'price' => $request->price,
             'units' => $request->units,
             'created_at' => date('Y-m-d H:i:s'),
@@ -58,7 +70,7 @@ class ProductController extends Controller
     public function destroy($id)
     {
         $product = Product::find($id);
-        
+
         if($product->user_id == Auth::User()->id){
             $product->delete();
 
@@ -70,7 +82,7 @@ class ProductController extends Controller
 
     public function update(Request $request, $id)
     {
-        if($product->user_id == Auth::User()->id){
+        if($request->user_id == Auth::User()->id){
             $product = Product::find($id);
 
             $product->product_type_id = $request->product_type_id;
@@ -82,7 +94,7 @@ class ProductController extends Controller
             $product->product_picture = $request->product_picture;
             $product->updated_at = date('Y-m-d H:i:s');
             $product->save();
-    
+
             return "Product Updated";
         }else{
             return "Cannot Update";
@@ -115,7 +127,7 @@ class ProductController extends Controller
         //$product = DB::table('products')
         //->where('product_name','like',"%".$search."%")
         //->paginate();
-        $product = Product::where('user_id', $id) 
+        $product = Product::where('user_id', $id)
                             ->where('product_name', 'LIKE', '%' . $search . '%')->get();
 
         return response()->json($product, 200);
@@ -137,10 +149,10 @@ class ProductController extends Controller
         //$product = Product::where('user_id', $id)->get();
 
         $product = DB::table('products')
-        -> leftJoin('product_details', 'product_details.product_id', '=', 'products.id') 
+        -> leftJoin('product_details', 'product_details.product_id', '=', 'products.id')
         -> select('products.id', 'product_name', 'price', 'product_picture', DB::raw('sum(product_details.product_quantity) as total'))
-        -> where('user_id', $id) 
-        -> groupBy('products.id', 'products.product_name', 'products.price', 'products.product_picture') 
+        -> where('user_id', $id)
+        -> groupBy('products.id', 'products.product_name', 'products.price', 'products.product_picture')
         -> get();
 
         return response()->json($product, 200);

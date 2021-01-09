@@ -62,7 +62,7 @@ class PartnerController extends Controller
 
         return response()->json($partner, 200);
     }
-    
+
     public function searchByUserID(Request $request)
     {
         //$id = $request->id;
@@ -81,6 +81,7 @@ class PartnerController extends Controller
     public function store(Request $request)
     {
         $id = Auth::User()->id;
+
         DB::table('partners')->insert([
             'user_id' => $id,
             'name' => $request->name,
@@ -140,14 +141,14 @@ class PartnerController extends Controller
             $partner->address = $request->address;
             $partner->phone_number = $request->phone_number;
             $partner->updated_at = date('Y-m-d H:i:s');
-            
+
             $partner->save();
 
             return "Partner Updated";
         }else{
             return "Not Allowed";
         }
-        
+
     }
 
     /**
@@ -158,7 +159,7 @@ class PartnerController extends Controller
      */
     public function destroy($id)
     {
-        $id = Auth::User()->id; 
+        $id = Auth::User()->id;
         $partner = Partner::find($id);
 
         if($id == $partner->user_id){
