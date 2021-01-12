@@ -24,6 +24,8 @@ class InvoicesController extends Controller
     public function index()
     {
         //return Invoice::all();
+        $id = Auth::User()->id;
+        return Invoice::where('user_id', $id)->get();
     }
 
     /**

@@ -49,6 +49,8 @@ class ProductController extends Controller
     public function index()
     {
         //return Product::all();
+        $id = Auth::User()->id;
+        return Product::where('user_id', $id)->get();
     }
 
     public function create(Request $request)

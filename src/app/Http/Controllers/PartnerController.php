@@ -18,6 +18,8 @@ class PartnerController extends Controller
     {
         //$data = Partner::all();
         //return response()->json($data, 200);
+        $id = Auth::User()->id;
+        return Partner::where('user_id', $id)->get();
     }
 
     /**

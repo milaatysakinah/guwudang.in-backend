@@ -21,6 +21,8 @@ class OrderItemController extends Controller
     public function index()
     {
         //return OrderItem::all();
+        $id = Auth::User()->id;
+        return OrderItem::where('user_id', $id)->get();
     }
 
     /**
