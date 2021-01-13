@@ -58,3 +58,4 @@ Route::get('productDetailByProductID','App\Http\Controllers\ProductDetailControl
 Route::resource('productType', 'App\Http\Controllers\ProductTypeController')->middleware('jwt.verify');
 Route::resource('status', 'App\Http\Controllers\StatusController')->middleware('jwt.verify');
 Route::resource('transactionType', 'App\Http\Controllers\TransactionTypeController')->middleware('jwt.verify');
+Route::resource('units', 'App\Http\Controllers\UnitsController')->middleware('jwt.verify');

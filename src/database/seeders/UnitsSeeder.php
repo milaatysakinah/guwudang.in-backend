@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class UnitsSeeder extends Seeder
 {
@@ -19,7 +21,7 @@ class UnitsSeeder extends Seeder
         DB::table('units')->insert(['units_name' => 'Units', 'created_at' => Carbon::now(),]);
         DB::table('units')->insert(['units_name' => 'Lusin', 'created_at' => Carbon::now(),]);
         DB::table('units')->insert(['units_name' => 'Box', 'created_at' => Carbon::now(),]);
-        B::table('units')->insert(['units_name' => 'Lembar', 'created_at' => Carbon::now(),]);
-        B::table('units')->insert(['units_name' => 'Pack', 'created_at' => Carbon::now(),]);
+        DB::table('units')->insert(['units_name' => 'Lembar', 'created_at' => Carbon::now(),]);
+        DB::table('units')->insert(['units_name' => 'Pack', 'created_at' => Carbon::now(),]);
     }
 }

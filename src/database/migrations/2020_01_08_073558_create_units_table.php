@@ -13,9 +13,9 @@ class CreateUnitsTable extends Migration
      */
     public function up()
     {
-        Schema::create('units_name', function (Blueprint $table) {
+        Schema::create('units', function (Blueprint $table) {
             $table->id();
-            $table->string('units');
+            $table->string('units_name');
             $table->timestamps();
         });
     }
