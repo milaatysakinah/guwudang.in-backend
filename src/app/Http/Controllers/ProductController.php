@@ -84,16 +84,28 @@ class ProductController extends Controller
 
     public function update(Request $request, $id)
     {
-        if($request->user_id == Auth::User()->id){
-            $product = Product::find($id);
+        $product = Product::find($id);
+
+        if($product->user_id == Auth::User()->id){
+            $address = $product->product_picture;
+            $public = 'public/productpic';
+
+            if ($files = $request->file('file')) {
+
+                //$originName = $files->getClientOriginalName();
+                $newName = $request->product_name . ".png";
+    
+                $file = $files->storeAs($public, $newName);
+    
+                $address = 'http://localhost:8000/storage/productpic/' . $newName;
+            }
 
             $product->product_type_id = $request->product_type_id;
-            $product->user_id = $request->user_id;
             $product->product_name = $request->product_name;
             $product->price = $request->price;
             $product->units = $request->units;
             $product->description = $request->description;
-            $product->product_picture = $request->product_picture;
+            $product->product_picture = $address;
             $product->updated_at = date('Y-m-d H:i:s');
             $product->save();
 
