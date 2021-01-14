@@ -47,7 +47,7 @@ class LoginController extends Controller
             'address' => $request->get('address'),
             'phone_number' => $request->get('phoneNumber'),
             'company_name' => $request->get('companyName'),
-            'profile_picture' => "http://localhost:8000/storage/userpic/default.png",
+            'profile_picture' => "http://api.guwudangin.me/storage/userpic/default.png",
             'password' => Hash::make($request->get('password')),
         ]);
 

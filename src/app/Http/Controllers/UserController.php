@@ -104,7 +104,7 @@ class UserController extends Controller
                 
                 $file = $files->storeAs($public, $newName);
                 
-                $address = 'http://localhost:8000/storage/userpic/' . $newName;
+                $address = 'http://api.guwudangin.me/storage/userpic/' . $newName;
             }    
 
             $user->email = $request->email;

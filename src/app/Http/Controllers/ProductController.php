@@ -18,7 +18,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $id = Auth::User()->id;
-        $address = 'http://localhost:8000/storage/productpic/default.png';
+        $address = 'http://api.guwudangin.me/storage/productpic/default.png';
         $public = 'public/productpic';
 
         if ($files = $request->file('file')) {
@@ -28,7 +28,7 @@ class ProductController extends Controller
 
             $file = $files->storeAs($public, $newName);
 
-            $address = 'http://localhost:8000/storage/productpic/' . $newName;
+            $address = 'http://api.guwudangin.me/storage/productpic/' . $newName;
         }
 
         DB::table('products')->insert([
@@ -97,7 +97,7 @@ class ProductController extends Controller
     
                 $file = $files->storeAs($public, $newName);
     
-                $address = 'http://localhost:8000/storage/productpic/' . $newName;
+                $address = 'http://api.guwudangin.me/storage/productpic/' . $newName;
             }
 
             $product->product_type_id = $request->product_type_id;
