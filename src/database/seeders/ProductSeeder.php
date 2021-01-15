@@ -22,7 +22,7 @@ class ProductSeeder extends Seeder
             'price' => 200000,
             'units' => 3,
             'description' => 'Ini Deskripsi product 1',
-            'product_picture' => '/img/',
+            'product_picture' => 'http://api.guwudangin.me/storage/productpic/default.png',
         ]);
     }
 }
