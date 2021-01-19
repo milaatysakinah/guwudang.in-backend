@@ -133,10 +133,10 @@ class PartnerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $id = Auth::User()->id;
+        $user_id = Auth::User()->id;
         $partner = Partner::find($id);
 
-        if($partner->user_id == $id){
+        if($partner->user_id == $user_id){
             $partner->user_id = $id;
             $partner->name = $request->name;
             $partner->email = $request->email;
@@ -161,10 +161,10 @@ class PartnerController extends Controller
      */
     public function destroy($id)
     {
-        $id = Auth::User()->id;
+        $user_id = Auth::User()->id;
         $partner = Partner::find($id);
 
-        if($id == $partner->user_id){
+        if($user_id == $partner->user_id){
             $partner ->delete();
 
             return "Partner Deleted";
