@@ -1,17 +1,28 @@
 # guwudang.in-backend
-#HOW TO SETUP BACKEND
+HOW TO SETUP BACKEND
+=========
 
-#install project dependencies
+1. Install project dependencies
+```bash
 composer install
+```
 
-#generate jwt key
+2. Generate jwt key
+```bash
 php artisan jwt:secret
+```
 
-#setup .env file from .env.example
+3. setup .env file from .env.example
+```bash
 DB_CONNECTION=mysql
+```
 
-#seed database
+4. seed database
+```bash
 php artisan migrate:fresh --seed
+```
 
-#laravel artisan serve
+5. laravel artisan serve
+```bash
 php artisan serve
+```
