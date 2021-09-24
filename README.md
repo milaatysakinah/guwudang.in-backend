@@ -12,17 +12,22 @@ composer install
 php artisan jwt:secret
 ```
 
-3. setup .env file from .env.example
+3. Generate artisan key
+```bash
+php artisan key:generate
+```
+
+4. setup .env file from .env.example
 ```bash
 DB_CONNECTION=mysql
 ```
 
-4. seed database
+5. seed database
 ```bash
 php artisan migrate:fresh --seed
 ```
 
-5. laravel artisan serve
+6. laravel artisan serve
 ```bash
 php artisan serve
 ```
