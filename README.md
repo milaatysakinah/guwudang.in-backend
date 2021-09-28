@@ -20,6 +20,8 @@ php artisan key:generate
 4. setup .env file from .env.example
 ```bash
 DB_CONNECTION=mysql
+DB_DATABASE=[Nama Database yang telah dibuat]
+DB_PORT=[sesuaikan dengan port yang digunakan sql]
 ```
 
 5. seed database
