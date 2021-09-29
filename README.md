@@ -29,6 +29,11 @@ DB_PORT=[sesuaikan dengan port yang digunakan sql]
 php artisan migrate:fresh --seed
 ```
 
+6. seed database
+```bash
+php artisan storage:link
+```
+
 6. laravel artisan serve
 ```bash
 php artisan serve
