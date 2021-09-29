@@ -34,7 +34,7 @@ php artisan migrate:fresh --seed
 php artisan storage:link
 ```
 
-6. laravel artisan serve
+7. laravel artisan serve
 ```bash
 php artisan serve
 ```
